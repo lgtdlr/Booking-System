@@ -37,6 +37,6 @@ def handleInviteeById():  # put application's code here
     return 'Hello World!'
 
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run()
 
