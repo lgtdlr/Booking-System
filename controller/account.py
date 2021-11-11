@@ -24,7 +24,7 @@ class BaseAccount:
 
     def getAccountById(self, account_id):
         dao = AccountDAO()
-        account_tuple = dao.getPartById(account_id)
+        account_tuple = dao.getAccountById(account_id)
         if not account_tuple:
             return jsonify("Not Found"), 404
         else:
@@ -41,14 +41,13 @@ class BaseAccount:
         result = self.build_attr_dict(account_id, username, full_name, role)
         return jsonify(result), 201
 
-    def updateAccount(self, json):
-        account_id = json['account_id']
+    def updateAccount(self, account_id, json):
         username = json['username']
         password = json['password']
         full_name = json['full_name']
         role = json['role']
         dao = AccountDAO()
-        is_updated = dao.updatePart(account_id, username, password, full_name, role)
+        is_updated = dao.updateAccount(account_id, username, password, full_name, role)
         result = self.build_attr_dict(account_id, username, full_name, role)
         return jsonify(result), 200
 
