@@ -65,3 +65,21 @@ class BaseAccount:
         dao = AccountDAO()
         result = dao.findAvailableTime(account_ids, dates)
         return jsonify(result), 200
+
+    def setAccountUnavailable(self, json):
+        account_id = json['account_id']
+        date = json['date']
+        start_time = json['start_time']
+        end_time = json['end_time']
+        dao = AccountDAO()
+        result = dao.setUnavailable(account_id, date, start_time, end_time)
+        return jsonify(result), 200
+
+    def setAccountAvailable(self, json):
+        account_id = json['account_id']
+        date = json['date']
+        start_time = json['start_time']
+        end_time = json['end_time']
+        dao = AccountDAO()
+        result = dao.setAvailable(account_id, date, start_time, end_time)
+        return jsonify(result), 200

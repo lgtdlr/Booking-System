@@ -32,28 +32,41 @@ class AccountDAO:
         hashed_password = generate_password_hash(password, method='sha256')
         cursor = self.conn.cursor()
         query = "INSERT INTO account (username, password ,full_name, role) VALUES (%s,%s,%s,%s) RETURNING account_id;"
-        cursor.execute(query, (username, hashed_password, full_name, role,))
-        account_id = cursor.fetchone()[0]
-        self.conn.commit()
-        return account_id
+        try:
+            cursor.execute(query, (username, hashed_password, full_name, role,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return None
+        else:
+            account_id = cursor.fetchone()[0]
+            self.conn.commit()
+            return account_id
 
     def updateAccount(self, account_id, username, password, full_name, role):
         hashed_password = generate_password_hash(password, method='sha256')
         cursor = self.conn.cursor()
         query = "UPDATE account SET username = %s, password = %s, full_name = %s, role = %s WHERE account_id=%s;"
-        cursor.execute(query, (username, hashed_password, full_name, role, account_id,))
-        self.conn.commit()
-        return True
+        try:
+            cursor.execute(query, (username, hashed_password, full_name, role, account_id,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
 
     def deleteAccount(self, account_id):
         cursor = self.conn.cursor()
         query = "DELETE FROM account WHERE account_id=%s;"
-        cursor.execute(query, (account_id,))
-        affected_rows = cursor.rowcount
-        self.conn.commit()
-        return affected_rows != 0
+        try:
+            cursor.execute(query, (account_id,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+        else:
+            affected_rows = cursor.rowcount
+            self.conn.commit()
+            return affected_rows != 0
 
-    # Operation 8: Find a time that is free for everyone
     def findAvailableTime(self, account_ids, dates):
         cursor = self.conn.cursor()
         accounts = tuple(account_ids)
@@ -76,3 +89,36 @@ class AccountDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def setUnavailable(self, account_id, date, start_time, end_time):
+        cursor = self.conn.cursor()
+        query = "INSERT INTO is_account_unavailable SELECT %s as account_id, t.timeslot_id, %s as date " \
+                "FROM timeslot t WHERE (t.start_time >= %s::time AND t.end_time <= %s::time) " \
+                "AND (t.end_time-t.start_time >= '00:00:00'::time) ON CONFLICT DO NOTHING;"
+        try:
+            cursor.execute(query, (account_id, date, start_time, end_time,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
+
+    def setAvailable(self, account_id, date, start_time, end_time):
+        cursor = self.conn.cursor()
+        query = "DELETE FROM is_account_unavailable WHERE account_id IN " \
+                "(SELECT iau.account_id FROM is_account_unavailable iau " \
+                "INNER JOIN timeslot t on t.timeslot_id = iau.timeslot_id " \
+                "WHERE account_id = %s AND date = %s " \
+                "AND (t.start_time >= %s::time AND t.end_time <= %s::time) " \
+                "AND (t.end_time-t.start_time >= '00:00:00'::time));"
+        try:
+            cursor.execute(query, (account_id, date, start_time, end_time,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            affected_rows = cursor.rowcount
+            return affected_rows != 0
+
