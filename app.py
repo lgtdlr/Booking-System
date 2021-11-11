@@ -59,12 +59,31 @@ def handleInviteeById():  # put application's code here
     return 'Hello World!'
 
 
+# Operation 8: Find a time that is free for everyone
 @app.route('/redpush/account/find-available-time', methods=['GET'])
 def findAvailableTime():
     if request.method == 'GET':
         return BaseAccount().findAvailableTime(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
+
+
+# Operation 9: Allow user to mark time-space as “Unavailable”
+@app.route('/redpush/account/set-unavailable', methods=['PUT'])
+def setAccountUnavailable():
+    if request.method == 'PUT':
+        return BaseAccount().setAccountUnavailable(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# Operation 9.1: Allow user to mark time-space as “Available”
+@app.route('/redpush/account/set-available', methods=['DELETE'])
+def setAccountAvailable():
+    if request.method == 'DELETE':
+        return BaseAccount().setAccountAvailable(request.json)
+    else:
+        return jsonify("Method Not Allow"), 405
 
 
 if __name__ == '__main__':
