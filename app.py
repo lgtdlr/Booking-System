@@ -8,13 +8,25 @@ CORS(app)
 
 
 @app.route('/redpush/account', methods=['GET', 'POST'])
-def handleAccounts():  # put application's code here
-    return 'Hello World!'
+def handleAccounts():
+    if request.method == 'GET':
+        return BaseAccount().getAllAccounts()
+    elif request.method == 'POST':
+        return BaseAccount().insertAccount(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 
 @app.route('/redpush/account/<int:account_id>', methods=['GET', 'PUT', 'DELETE'])
-def handleAccountById():  # put application's code here
-    return 'Hello World!'
+def handleAccountById(account_id):
+    if request.method == 'GET':
+        return BaseAccount().getAccountById(account_id)
+    elif request.method == 'PUT':
+        return BaseAccount().updateAccount(account_id, request.json)
+    elif request.method == 'DELETE':
+        return BaseAccount().deleteAccount(account_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 
 @app.route('/redpush/room', methods=['GET', 'POST'])
