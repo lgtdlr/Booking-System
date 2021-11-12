@@ -1,18 +1,19 @@
 from flask import jsonify
 from model.room import RoomDAO
 
+
 class BaseRoom:
 
     def build_map_dict(self, row):
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3]}
         return result
 
-    def build_attr_dict(self, room_id,name, capacity, type):
+    def build_attr_dict(self, room_id, name, capacity, type):
         result = {'room_id': room_id, 'name': name, 'capacity': capacity, 'type': type}
         return result
 
     def getAllRooms(self):
-        dao = RoomsDAO()
+        dao = RoomDAO()
         room_list = dao.getAllRooms()
         result_list = []
         for row in room_list:
@@ -20,9 +21,9 @@ class BaseRoom:
             result_list.append(obj)
         return jsonify(result_list)
 
-    def getRoomById(self, pid):
-        dao = RoomsDAO()
-        room_tuple = dao.getRoomById(pid)
+    def getRoomById(self, room_id):
+        dao = RoomDAO()
+        room_tuple = dao.getRoomById(room_id)
         if not room_tuple:
             return jsonify("Not Found"), 404
         else:
@@ -39,18 +40,18 @@ class BaseRoom:
         return jsonify(result), 201
 
     def updateRoom(self, json):
-        rname = json['rname']
-        rcapacity = json['rcapacity']
-        rtype = json['rtype']
-        rid = json['rid']
-        dao = RoomsDAO()
-        updated_code = dao.updateRoom(rid,rname,rcapacity,rtype)
-        result = self.build_attr_dict(rid,rname,rcapacity,rtype)
+        name = json['name']
+        capacity = json['capacity']
+        type = json['type']
+        room_id = json['room_id']
+        dao = RoomDAO()
+        is_updated = dao.updateRoom(room_id, name, capacity, type)
+        result = self.build_attr_dict(room_id, name, capacity, type)
         return jsonify(result), 200
 
-    def deleteRoom(self, rid):
-        dao = RoomsDAO()
-        result = dao.deleteRoom(rid)
+    def deleteRoom(self, room_id):
+        dao = RoomDAO()
+        result = dao.deleteRoom(room_id)
         if result:
             return jsonify("DELETED"), 200
         else:

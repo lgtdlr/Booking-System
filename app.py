@@ -34,7 +34,7 @@ def handleRooms():
     if request.method == 'GET':
         return BaseRoom().getAllRooms()
     elif request.method == 'POST':
-        return BaseRoom().insertRoom(request.json)
+        return BaseRoom().addNewRoom(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -44,7 +44,7 @@ def handleRoomById(room_id):
     if request.method == 'GET':
         return BaseRoom().getRoomById(room_id)
     elif request.method == 'PUT':
-        return BaseRoom().updateRoom(room_id, request.json)
+        return BaseRoom().updateRoom(request.json)
     elif request.method == 'DELETE':
         return BaseRoom().deleteRoom(room_id)
     else:
