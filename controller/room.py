@@ -2,13 +2,6 @@ from flask import jsonify
 from model.room import RoomsDAO
 
 class BaseRoom:
-    def getAllPartsOld(self):
-        D1 = {"pid" : 1, "pname": "Tuerka", "pmaterial" : "steel", "pcolor" : "grey", "pprice" : 2.5}
-        D2 = {"pid" : 2, "pname": "Motor", "pmaterial" : "aluminum", "pcolor" : "black", "pprice" : 5000}
-        D3 = {"pid" : 3, "pname": "Panel", "pmaterial" : "madera", "pcolor" : "beige", "pprice" : 10}
-        result = [D1, D2, D3]
-        return jsonify(result)
-        #return "All Parts Method"
 
     def build_map_dict(self, row):
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3]}

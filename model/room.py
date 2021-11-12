@@ -38,7 +38,7 @@ class RoomDAO:
 
     def updateRoom(self, room_id, name, capacity, type):
         cursor = self.conn.cursor()
-        query = "update room set name=%s, capcity=%s, type=%s where room_id=%s;"
+        query = "update room set name = %s, capacity = %s, type = %s where room_id=%s;"
         cursor.execute(query, (name, capacity, type, room_id))
         self.conn.commit()
         return True
