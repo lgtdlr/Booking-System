@@ -98,5 +98,17 @@ def setAccountAvailable():
         return jsonify("Method Not Allow"), 405
 
 
+# Operation 10: Only Department Staff can mark time-space as "Unavailable/Available" for any type of room
+@app.route('/redpush/room/set-availability', methods=['POST'])
+def setRoomAvailability():
+    if request.method == 'POST':
+        role = BaseAccount().getAccountRole(request.json)
+        app.logger.info(role)
+        if role == 'Department Staff':
+            return BaseRoom().setRoomAvailability(request.json)
+        else:
+            return jsonify("The server understood the request, but is refusing to authorize it."), 403
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

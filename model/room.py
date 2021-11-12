@@ -53,6 +53,37 @@ class RoomDAO:
 
     # CRUD OPERATIONS FINISH
 
+    def setRoomAvailable(self, room_id, date, start_time, end_time):
+        cursor = self.conn.cursor()
+        query = "DELETE FROM is_room_unavailable WHERE room_id IN " \
+                "(SELECT iru.room_id FROM is_room_unavailable iru " \
+                "INNER JOIN timeslot t on t.timeslot_id = iru.timeslot_id " \
+                "WHERE room_id = %s AND date = %s " \
+                "AND (t.start_time >= %s::time AND t.end_time <= %s::time) " \
+                "AND (t.end_time-t.start_time >= '00:00:00'::time));"
+        try:
+            cursor.execute(query, (room_id, date, start_time, end_time,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
+
+    def setRoomUnavailable(self, room_id, date, start_time, end_time):
+        cursor = self.conn.cursor()
+        query = "INSERT INTO is_room_unavailable SELECT %s as room_id, t.timeslot_id, %s as date " \
+                "FROM timeslot t WHERE (t.start_time >= %s::time AND t.end_time <= %s::time) " \
+                "AND (t.end_time-t.start_time >= '00:00:00'::time) ON CONFLICT DO NOTHING;"
+        try:
+            cursor.execute(query, (room_id, date, start_time, end_time,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
+
     # def findAvailableRoom(self,startTime,endTime,date):
     #     cursor = self.conn.cursor()
     #     query = """SELECT name FROM room

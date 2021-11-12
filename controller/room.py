@@ -1,5 +1,5 @@
 from flask import jsonify
-from model.room import RoomsDAO
+from model.room import RoomDAO
 
 class BaseRoom:
 
@@ -30,12 +30,12 @@ class BaseRoom:
             return jsonify(result), 200
 
     def addNewRoom(self, json):
-        rname = json['rname']
-        rcapacity = json['rcapacity']
-        rtype = json['rtype']
-        dao = RoomsDAO()
-        rid = dao.insertRoom(rname,rcapacity,rtype)
-        result = self.build_attr_dict(rid,rname,rcapacity,rtype)
+        name = json['name']
+        capacity = json['capacity']
+        type = json['type']
+        dao = RoomDAO()
+        room_id = dao.insertRoom(name, capacity, type)
+        result = self.build_attr_dict(room_id, name, capacity, type)
         return jsonify(result), 201
 
     def updateRoom(self, json):
@@ -56,10 +56,23 @@ class BaseRoom:
         else:
             return jsonify("NOT FOUND"), 404
 
-    def findAvailableRoom(self,json):
+    def setRoomAvailability(self, json):
+        room_id = json['room_id']
         date = json['date']
         start_time = json['start_time']
         end_time = json['end_time']
-        dao = RoomsDAO
-        result = dao.findAvailableRoom(date,start_time,end_time)
+        is_available = json['is_available']
+        dao = RoomDAO()
+        if is_available:
+            result = dao.setRoomAvailable(room_id, date, start_time, end_time)
+        else:
+            result = dao.setRoomUnavailable(room_id, date, start_time, end_time)
+        return jsonify(result), 200
+
+    def findAvailableRoom(self, json):
+        date = json['date']
+        start_time = json['start_time']
+        end_time = json['end_time']
+        dao = RoomDAO
+        result = dao.findAvailableRoom(date, start_time, end_time)
         return jsonify(result), 200

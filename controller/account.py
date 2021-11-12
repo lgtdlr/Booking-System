@@ -59,6 +59,16 @@ class BaseAccount:
         else:
             return jsonify("NOT FOUND"), 404
 
+    def getAccountRole(self, json):
+        account_id = json['account_id']
+        dao = AccountDAO()
+        account_tuple = dao.getAccountById(account_id)
+        if not account_tuple:
+            return jsonify("Not Found"), 404
+        else:
+            result = self.build_map_dict(account_tuple)
+            return result['role']
+
     def findAvailableTime(self, json):
         account_ids = json['account_ids']
         dates = json['dates']
