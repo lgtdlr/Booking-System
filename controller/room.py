@@ -122,7 +122,7 @@ class BaseRoom:
         rooms_list = dao.getMostBookedRooms()
         result_list = []
         for row in rooms_list:
-            obj = self.build_map_dict(row)
+            obj = self.build_map_dict_most_bookings_in_room(row)
             result_list.append(obj)
         return jsonify(result_list), 200
 
