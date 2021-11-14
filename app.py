@@ -54,7 +54,7 @@ def handleRoomById(room_id):
 
 
 @app.route('/redpush/event', methods=['GET', 'POST'])
-def handleEvents():  # put application's code here
+def handleEvents():  
     if request.method == 'GET':
         return BaseEvent().getAllEvents()
     elif request.method == 'POST':
@@ -64,7 +64,7 @@ def handleEvents():  # put application's code here
 
 
 @app.route('/redpush/event/<int:event_id>', methods=['GET', 'PUT', 'DELETE'])
-def handleEventById(event_id):  # put application's code here
+def handleEventById(event_id): 
     if request.method == 'GET':
         return BaseEvent().getEventById(event_id)
     elif request.method == 'PUT':
@@ -134,6 +134,25 @@ def getAllDaySchedule(room_id):
         return BaseRoom().getAllDaySchedule(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
+
+# Operation 5: Give an all-day schedule for a user
+@app.route('/redpush/account/<account_id>/schedule', methods=['GET'])
+def getUserSchedule(account_id):
+    if request.method == 'GET':
+        return BaseAccount().getUserSchedule(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+#Operation 6: Create a meeting with 2+ people in a room
+@app.route('/redpush/event/<creator_id>/create-meeting', methods=['POST'])
+def createMeeting(creator_id):
+    if request.method == 'POST':
+        BaseInvitee().insertInvitee(request.json)
+        
+        return BaseEvent().addNewEvent(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405 
 
 
 # Operation 8: Find a time that is free for everyone
