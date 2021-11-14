@@ -100,10 +100,9 @@ class BaseAccount:
             result = dao.setAccountUnavailable(account_id, date, start_time, end_time)
         return jsonify(result), 200
 
-    def getUserSchedule(self,json):
-        username = json['username']
+    def getUserSchedule(self,username,json):
         date = json['date']
-        dao = AccountDAO
+        dao = AccountDAO()
         result = dao.getUserSchedule(username,date)
         return jsonify(result), 200
 

@@ -166,10 +166,10 @@ def getAllDaySchedule(room_id):
         return jsonify("Method Not Allowed"), 405
 
 # Operation 5: Give an all-day schedule for a user
-@app.route('/redpush/account/<account_id>/schedule', methods=['GET'])
-def getUserSchedule(account_id):
+@app.route('/redpush/account/<username>/schedule', methods=['GET'])
+def getUserSchedule(username):
     if request.method == 'GET':
-        return BaseAccount().getUserSchedule(request.json)
+        return BaseAccount().getUserSchedule(username,request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -178,8 +178,7 @@ def getUserSchedule(account_id):
 @app.route('/redpush/event/<creator_id>/create-meeting', methods=['POST'])
 def createMeeting(creator_id):
     if request.method == 'POST':
-        BaseInvitee().insertInvitee(request.json)
-                
+        BaseInvitee().insertInvitee(request.json)  
         return BaseEvent().addNewEvent(request.json)
     else:
         return jsonify("Method Not Allowed"), 405 
