@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from controller.account import BaseAccount
 from controller.room import BaseRoom
+from controller.event import BaseEvent
 
 app = Flask(__name__)
 CORS(app)
@@ -53,12 +54,24 @@ def handleRoomById(room_id):
 
 @app.route('/redpush/event', methods=['GET', 'POST'])
 def handleEvents():  # put application's code here
-    return 'Hello World!'
+    if request.method == 'GET':
+        return BaseEvent().getAllEvents()
+    elif request.method == 'POST':
+        return BaseEvent().addNewEvent(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 
 @app.route('/redpush/event/<int:event_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleEventById(event_id):  # put application's code here
-    return 'Hello World!'
+    if request.method == 'GET':
+        return BaseEvent().getEventById(event_id)
+    elif request.method == 'PUT':
+        return BaseEvent().updateEvent(event_id, request.json)
+    elif request.method == 'DELETE':
+        return BaseEvent().deleteEvent(event_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 
 @app.route('/redpush/event/invitees/<int:event_id>', methods=['GET', 'POST'])
@@ -69,7 +82,6 @@ def handleInvitees(event_id):  # put application's code here
 @app.route('/redpush/event/invitees/<int:event_id>/<int:account_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleInviteeById(event_id, account_id):  # put application's code here
     return 'Hello World!'
-
 
 
 # Operation 8: Find a time that is free for everyone
