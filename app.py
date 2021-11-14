@@ -71,6 +71,7 @@ def handleInviteeById(event_id, account_id):  # put application's code here
     return 'Hello World!'
 
 
+
 # Operation 8: Find a time that is free for everyone
 @app.route('/redpush/account/find-available-time', methods=['GET'])
 def findAvailableTime():

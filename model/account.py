@@ -122,3 +122,35 @@ class AccountDAO:
             affected_rows = cursor.rowcount
             return affected_rows != 0
 
+    def getUserSchedule(self,uname,date):
+         cursor = self.conn.cursor()
+         query = '''
+                    SELECT %s AS username,timeslot.start_time,timeslot.end_time,TRUE as available FROM timeslot WHERE timeslot.timeslot_id NOT IN (
+                    SELECT timeslot.timeslot_id FROM account
+                    INNER JOIN is_account_unavailable iau on account.account_id = iau.account_id
+                    INNER JOIN timeslot on iau.timeslot_id = timeslot.timeslot_id
+                    WHERE account.username = %s AND iau.date = %s
+                    UNION
+                    SELECT t2.timeslot_id FROM account
+                    INNER JOIN is_invited i on account.account_id = i.account_id
+                    INNER JOIN event e on i.account_id = e.event_id
+                    INNER JOIN occupies o on e.event_id = o.event_id
+                    INNER JOIN timeslot t2 on o.timeslot_id = t2.timeslot_id
+                    WHERE account.username = %s AND e.date = %s
+                    )
+                    UNION
+                    SELECT account.username,timeslot.start_time,timeslot.end_time,FALSE as available FROM account
+                    INNER JOIN is_account_unavailable iau on account.account_id = iau.account_id
+                    INNER JOIN timeslot on iau.timeslot_id = timeslot.timeslot_id
+                    WHERE account.username = %s AND iau.date = %s
+                    UNION
+                    SELECT account.username,t2.start_time,t2.end_time,FALSE as available FROM account
+                    INNER JOIN is_invited i on account.account_id = i.account_id
+                    INNER JOIN event e on i.account_id = e.event_id
+                    INNER JOIN occupies o on e.event_id = o.event_id
+                    INNER JOIN timeslot t2 on o.timeslot_id = t2.timeslot_id
+                    WHERE account.username = %s AND e.date = %s    
+                 '''
+         cursor.execute(query, (uname,uname,date,uname,date,uname,date,uname,date))
+         result = cursor.fetchone()
+         return result

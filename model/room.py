@@ -84,41 +84,64 @@ class RoomDAO:
             self.conn.commit()
             return True
 
-    # def findAvailableRoom(self,startTime,endTime,date):
-    #     cursor = self.conn.cursor()
-    #     query = """SELECT name FROM room
-    #                WHERE room.room_id NOT IN (
-    #                SELECT room.room_id FROM room
-    #                INNER JOIN is_room_unavailable iru on room.room_id = iru.room_id
-    #                INNER JOIN timeslot on iru.timeslot_id = timeslot.timeslot_id
-    #                WHERE date = %s and start_time = %s and end_time = %s
-    #                UNION SELECT room.room_id FROM room
-    #                INNER JOIN event e on room.room_id = e.room_id
-    #                INNER JOIN occupies o on e.event_id = o.event_id
-    #                INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
-    #                WHERE date = %s and start_time = %s and end_time = %s;
-    #             """
-    #     cursor.execute(query, (startTime,endTime,date,startTime,endTime,date))
-    #     result = cursor.fetchall()
-    #     return result
+    def findAvailableRoom(self,startTime,endTime,date):
+        cursor = self.conn.cursor()
+        query = """SELECT name FROM room
+                   WHERE room.room_id NOT IN (
+                   SELECT room.room_id FROM room
+                   INNER JOIN is_room_unavailable iru on room.room_id = iru.room_id
+                   INNER JOIN timeslot on iru.timeslot_id = timeslot.timeslot_id
+                   WHERE date = %s and start_time = %s and end_time = %s
+                   UNION SELECT room.room_id FROM room
+                   INNER JOIN event e on room.room_id = e.room_id
+                   INNER JOIN occupies o on e.event_id = o.event_id
+                   INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
+                   WHERE date = %s and start_time = %s and end_time = %s;
+                """
+        cursor.execute(query, (startTime,endTime,date,startTime,endTime,date))
+        result = cursor.fetchall()
+        return result
 
-    # def whoAppointedRoom(self,rname,date,startTime,endTime):
-    #     cursor = self.conn.cursor()
-    #     query = """SELECT full_name FROM account
-    #                JOIN event e ON account.account_id = e.creator_id
-    #                INNER JOIN  room r ON r.room_id = e.room_id
-    #                INNER JOIN occupies o ON e.event_id = o.event_id
-    #                INNER JOIN  timeslot t ON t.timeslot_id = o.timeslot_id
-    #                WHERE name = %s AND date = %s AND start_time = %s AND end_time = %s;
-    #             """
-    #     cursor.execute(query,(rname,date,startTime,endTime))
-    #     result = cursor.fetchone()
-    #     return result
+    def whoAppointedRoom(self,rname,date,startTime,endTime):
+        cursor = self.conn.cursor()
+        query = """SELECT full_name FROM account
+                   JOIN event e ON account.account_id = e.creator_id
+                   INNER JOIN  room r ON r.room_id = e.room_id
+                   INNER JOIN occupies o ON e.event_id = o.event_id
+                   INNER JOIN  timeslot t ON t.timeslot_id = o.timeslot_id
+                   WHERE name = %s AND date = %s AND start_time = %s AND end_time = %s;
+                """
+        cursor.execute(query,(rname,date,startTime,endTime))
+        result = cursor.fetchone()
+        return result
 
-    # def getAllDaySchedule(self,rname,date):
-    #     cursor.conn.cursor()
-    #     query = """SELECT start_time,end_time from timeslot
-    #                INNER JOIN is_room_unavailable iru on timeslot.timeslot_id = iru.timeslot_id
-    #                 inner join room r on r.room_id = iru.room_id
-    #                 WHERE r.name = %s AND 
-    #             """
+    def getAllDaySchedule(self,rname,date):
+        cursor = self.conn.cursor()
+        query = """
+                    SELECT %s AS room_name, timeslot.start_time,timeslot.end_time,TRUE as available FROM timeslot WHERE timeslot.timeslot_id NOT IN (
+                    SELECT timeslot.timeslot_id FROM room
+                    INNER JOIN is_room_unavailable iru on room.room_id = iru.room_id
+                    INNER JOIN timeslot on iru.timeslot_id = timeslot.timeslot_id
+                    WHERE room.name = %s AND iru.date = %s
+                    UNION
+                    SELECT t.timeslot_id FROM room
+                    INNER JOIN event e on room.room_id = e.room_id
+                    INNER JOIN occupies o on e.event_id = o.event_id
+                    INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
+                    WHERE room.name = %s AND event.date = %s
+                    )
+                    UNION
+                    SELECT room.name,timeslot.start_time,timeslot.end_time,FALSE as available FROM room
+                    INNER JOIN is_room_unavailable iru on room.room_id = iru.room_id
+                    INNER JOIN timeslot on iru.timeslot_id = timeslot.timeslot_id
+                    WHERE room.name = %s AND iru.date = %s
+                    UNION
+                    SELECT room.name,t.start_time,t.end_time,FALSE as available FROM room
+                    INNER JOIN event e on room.room_id = e.room_id
+                    INNER JOIN occupies o on e.event_id = o.event_id
+                    INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
+                    WHERE room.name = %s AND event.date = %s
+                """
+        cursor.execute(query,(rname,rname,date,rname,date,rname,date,rname,date))
+        result = cursor.fetchone()
+        return result

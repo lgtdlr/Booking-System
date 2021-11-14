@@ -93,3 +93,10 @@ class BaseAccount:
         dao = AccountDAO()
         result = dao.setAvailable(account_id, date, start_time, end_time)
         return jsonify(result), 200
+
+    def getUserSchedule(self,json):
+        username = json['username']
+        date = json['date']
+        dao = AccountDAO
+        result = dao.getUserSchedule(username,date)
+        return jsonify(result), 200
