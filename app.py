@@ -113,15 +113,17 @@ def handleOccupiedTimeslots():
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/occupies/<int:event_id>', methods=['GET'])
+@app.route('/redpush/occupies/<int:event_id>', methods=['GET', 'POST'])
 def handleOccupiedTimeslotsByEvent(event_id):
     if request.method == 'GET':
         return BaseOccupiedTimeslot().getAllOccupiedTimeslotsByEvent(event_id)
+    elif request.method == 'POST':
+        return BaseOccupiedTimeslot().insertOccupiedTimeslot(event_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/occupies/<int:event_id>/<int:timeslot_id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/redpush/occupies/<int:event_id>/<int:timeslot_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
     if request.method == 'GET':
         return BaseOccupiedTimeslot().getOccupiedTimeslotByUniqueId(timeslot_id, event_id)
@@ -129,8 +131,6 @@ def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
         return BaseOccupiedTimeslot().updateOccupiedTimeslot(timeslot_id, event_id, request.json)
     if request.method == 'DELETE':
         return BaseOccupiedTimeslot().deleteOccupiedTimeslot(timeslot_id, event_id)
-    elif request.method == 'POST':
-        return BaseOccupiedTimeslot().insertOccupiedTimeslot(event_id, request.json)
     return jsonify("Method Not Allowed"), 405
 
 
