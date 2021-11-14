@@ -167,7 +167,7 @@ class RoomDAO:
                     (select room_id, count(event_id) as room_uses
                     from (room natural join event natural join
                     is_invited natural join account)
-                    where account_id = 11 --user to check with
+                    where account_id = %s --user to check with
                     group by room_id)
                 
                     select room_id,name,capacity, type,room_uses

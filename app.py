@@ -192,11 +192,16 @@ def getMostBookedUsers():
 @app.route('/redpush/account/<int:account_id>/bookings-with-user', methods=['GET'])
 def getMostBookingWithSelectedUser(account_id):
     if request.method == 'GET':
-        return BaseAccount().getMost_Booking_With_User(request.json)
+        return BaseAccount().getMost_Booking_With_User(account_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
-
+@app.route('/redpush/room/<int:account_id>/most-booked-room-by-user',methods=['GET'])
+def getMostBookingInRoomWithSelectedUser(account_id):
+    if request.method == 'GET':
+        return BaseRoom().geMostBookedRooms_by_user(account_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 if __name__ == '__main__':
     app.run(debug=True)
