@@ -113,6 +113,15 @@ def findAvailableTime():
         return jsonify("Method Not Allowed"), 405
 
 
+# Operation 9: Allow user to mark time-space as “Unavailable” / "Available"
+@app.route('/redpush/account/set-availability', methods=['POST'])
+def setUserAvailability():
+    if request.method == 'POST':
+        return BaseAccount().setAccountAvailability(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 # Operation 9: Allow user to mark time-space as “Unavailable”
 @app.route('/redpush/account/set-unavailable', methods=['PUT'])
 def setAccountUnavailable():
@@ -141,6 +150,8 @@ def setRoomAvailability():
             return BaseRoom().setRoomAvailability(request.json)
         else:
             return jsonify("The server understood the request, but is refusing to authorize it."), 403
+    else:
+        return jsonify("Method Not Allow"), 405
 
 
 if __name__ == '__main__':

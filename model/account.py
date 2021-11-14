@@ -90,7 +90,7 @@ class AccountDAO:
             result.append(row)
         return result
 
-    def setUnavailable(self, account_id, date, start_time, end_time):
+    def setAccountUnavailable(self, account_id, date, start_time, end_time):
         cursor = self.conn.cursor()
         query = "INSERT INTO is_account_unavailable SELECT %s as account_id, t.timeslot_id, %s as date " \
                 "FROM timeslot t WHERE (t.start_time >= %s::time AND t.end_time <= %s::time) " \
@@ -104,7 +104,7 @@ class AccountDAO:
             self.conn.commit()
             return True
 
-    def setAvailable(self, account_id, date, start_time, end_time):
+    def setAccountAvailable(self, account_id, date, start_time, end_time):
         cursor = self.conn.cursor()
         query = "DELETE FROM is_account_unavailable WHERE account_id IN " \
                 "(SELECT iau.account_id FROM is_account_unavailable iau " \
