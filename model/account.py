@@ -165,3 +165,37 @@ class AccountDAO:
         cursor.execute(query)
         result = cursor.fetchall()
         return result
+
+
+
+    def getMostBooking_with_selected_User(self,account_id):
+        cursor = self.conn.cursor()
+        query  = """with bookings_with_selected_user as
+                    --query to determine account_ids that participate
+                    -- in same events as the selected user
+                        (select S2.account_id, S2.event_id
+                        from is_invited as S1, is_invited as S2
+                        where S1.account_id = %s -- id that represents the selected user
+                          and S2.event_id = S1.event_id
+                          and S2.account_id <> S1.account_id-- don't want selected user part of the solution
+                          order by S2.account_id, S2.event_id),--ordering just for testing purposes
+                    
+                    --counting events per account
+                    number_of_events_per_acount_with_selected_user as
+                        (select account_id, count(event_id) as number_of_bookings_with_user
+                         from bookings_with_selected_user
+                         group by account_id)
+                    
+                    
+                    select  account_id,username,password, full_name, role, number_of_bookings_with_user as number_of_bookings
+                    from number_of_events_per_acount_with_selected_user natural join account
+                    where number_of_bookings_with_user = (
+                    --there could be more than one user that
+                    --have the maximum amount of bookings
+                    --with the selected user
+                        select max(number_of_bookings_with_user)
+                        from number_of_events_per_acount_with_selected_user
+                        ) """
+        cursor.execute(query,(account_id,))
+        result = cursor.fetchall()
+        return result
