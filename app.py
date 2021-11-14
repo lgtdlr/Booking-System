@@ -149,7 +149,7 @@ def getUserSchedule(account_id):
 def createMeeting(creator_id):
     if request.method == 'POST':
         BaseInvitee().insertInvitee(request.json)
-        
+                
         return BaseEvent().addNewEvent(request.json)
     else:
         return jsonify("Method Not Allowed"), 405 
