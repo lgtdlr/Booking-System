@@ -174,5 +174,13 @@ def getBusyTimes():
     else:
         return jsonify("Method Not Allowed"), 405
 
+
+@app.route('/redpush/room/most-booked', methods=['GET'])
+def getMostBookedRooms():
+    if request.method == 'GET':
+        return BaseRoom().geMostBookedRooms()
+    else:
+        return jsonify("Method Not Allowed"), 405
+
 if __name__ == '__main__':
     app.run(debug=True)

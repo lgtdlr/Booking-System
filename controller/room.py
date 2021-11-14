@@ -107,3 +107,23 @@ class BaseRoom:
         # return jsonify(dumps(result, cls=PythonObjectEncoder))
         # return jsonify((dumps(result, default=self.myconverter)))
         return jsonify(result), 200
+
+
+    def geMostBookedRooms(self):
+        dao =  RoomDAO()
+        rooms_list = dao.getMostBookedRooms()
+        result_list = []
+        for row in rooms_list:
+            obj = self.build_map_dict(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
+
+
+    # def getBusiestTimesSlots(self):
+    #     dao = EventDAO()
+    #     times_list = dao.getMostBusiestTimes()
+    #     result_list = []
+    #     for row in times_list:
+    #         obj = self.build_map_dict_timeslot(row)
+    #         result_list.append(obj)
+    #     return jsonify(result_list), 200
