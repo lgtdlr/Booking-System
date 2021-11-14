@@ -117,7 +117,12 @@ def findAvailableRoom():
 @app.route('/redpush/room/<room_id>/who-appointed-room', methods=['GET'])
 def whoAppointedRoom(room_id):
     if request.method == 'GET':
-        return BaseRoom().whoAppointedRoom(request.json)
+        role = BaseAccount().getAccountRole(request.json)
+        app.logger.info(role)
+        if role == 'Department Staff':
+            return BaseRoom().whoAppointedRoom(request.json)
+        else:
+            return jsonify("The server understood the request, but is refusing to authorize it."), 403
     else:
         return jsonify("Method Not Allowed"), 405
 
