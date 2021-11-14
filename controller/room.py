@@ -1,4 +1,8 @@
+from datetime import datetime, time
+from json import dumps, loads, JSONEncoder, JSONDecoder
+import pickle
 from flask import jsonify
+
 from model.room import RoomDAO
 
 
@@ -8,9 +12,17 @@ class BaseRoom:
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3]}
         return result
 
+    def build_alt_map_dict(self, row):
+        result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3], 'start_time': row[4], 'end_time': row[5], 'available': row[6]}
+        return result
+
     def build_attr_dict(self, room_id, name, capacity, type):
         result = {'room_id': room_id, 'name': name, 'capacity': capacity, 'type': type}
         return result
+
+    # def myconverter(self, o):
+    #     if isinstance(o, time):
+    #         return o.__str__()
 
     def getAllRooms(self):
         dao = RoomDAO()
@@ -74,8 +86,8 @@ class BaseRoom:
         date = json['date']
         start_time = json['start_time']
         end_time = json['end_time']
-        dao = RoomDAO
-        result = dao.findAvailableRoom(date, start_time, end_time)
+        dao = RoomDAO()
+        result = dao.findAvailableRoom(start_time, end_time, date)
         return jsonify(result), 200
 
     def whoAppointedRoom(self, json):
@@ -83,13 +95,15 @@ class BaseRoom:
         date = json['date']
         start_time = json['start_time']
         end_time = json['end_time']
-        dao = RoomDAO
+        dao = RoomDAO()
         result = dao.whoAppointedRoom(room_name, date, start_time, end_time)
         return jsonify(result), 200
 
     def getAllDaySchedule(self, json):
         room_name = json['name']
         date = json['date']
-        dao = RoomDAO
+        dao = RoomDAO()
         result = dao.getAllDaySchedule(room_name, date)
+        # return jsonify(dumps(result, cls=PythonObjectEncoder))
+        # return jsonify((dumps(result, default=self.myconverter)))
         return jsonify(result), 200

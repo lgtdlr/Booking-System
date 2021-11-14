@@ -104,6 +104,33 @@ def handleInviteeByUniqueId(event_id, account_id):
     return jsonify("Method Not Allowed"), 405
 
 
+# Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame
+@app.route('/redpush/room/find-available-room', methods=['GET'])
+def findAvailableRoom():
+    if request.method == 'GET':
+        return BaseRoom().findAvailableRoom(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# Operation 3: Find who appointed a room at a certain time
+@app.route('/redpush/room/<room_id>/who-appointed-room', methods=['GET'])
+def whoAppointedRoom(room_id):
+    if request.method == 'GET':
+        return BaseRoom().whoAppointedRoom(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# Operation 4: Give an all-day schedule for a room
+@app.route('/redpush/room/<room_id>/schedule', methods=['GET'])
+def getAllDaySchedule(room_id):
+    if request.method == 'GET':
+        return BaseRoom().getAllDaySchedule(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 # Operation 8: Find a time that is free for everyone
 @app.route('/redpush/account/find-available-time', methods=['GET'])
 def findAvailableTime():
@@ -120,24 +147,6 @@ def setUserAvailability():
         return BaseAccount().setAccountAvailability(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
-
-
-# Operation 9: Allow user to mark time-space as “Unavailable”
-@app.route('/redpush/account/set-unavailable', methods=['PUT'])
-def setAccountUnavailable():
-    if request.method == 'PUT':
-        return BaseAccount().setAccountUnavailable(request.json)
-    else:
-        return jsonify("Method Not Allowed"), 405
-
-
-# Operation 9.1: Allow user to mark time-space as “Available”
-@app.route('/redpush/account/set-available', methods=['DELETE'])
-def setAccountAvailable():
-    if request.method == 'DELETE':
-        return BaseAccount().setAccountAvailable(request.json)
-    else:
-        return jsonify("Method Not Allow"), 405
 
 
 # Operation 10: Only Department Staff can mark time-space as "Unavailable/Available" for any type of room
