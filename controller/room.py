@@ -118,12 +118,3 @@ class BaseRoom:
             result_list.append(obj)
         return jsonify(result_list), 200
 
-
-    # def getBusiestTimesSlots(self):
-    #     dao = EventDAO()
-    #     times_list = dao.getMostBusiestTimes()
-    #     result_list = []
-    #     for row in times_list:
-    #         obj = self.build_map_dict_timeslot(row)
-    #         result_list.append(obj)
-    #     return jsonify(result_list), 200

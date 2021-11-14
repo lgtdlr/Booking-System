@@ -9,6 +9,16 @@ class BaseAccount:
         result = {'account_id': row[0], 'username': row[1], 'full_name': row[2], 'role': row[3]}
         return result
 
+
+    def build_map_dict(self, row):
+        result = {'account_id': row[0],
+                  'username': row[1],
+                  'full_name': row[2],
+                  'role': row[3],
+                  'number_of_bookings':row[4]}
+        return result
+
+
     def build_attr_dict(self, account_id, username, full_name, role):
         result = {'account_id': account_id, 'username': username, 'full_name': full_name, 'role': role}
         return result
@@ -95,3 +105,5 @@ class BaseAccount:
         dao = AccountDAO
         result = dao.getUserSchedule(username,date)
         return jsonify(result), 200
+
+    def getMostBookedUser(self):

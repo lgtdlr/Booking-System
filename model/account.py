@@ -154,3 +154,14 @@ class AccountDAO:
          cursor.execute(query, (uname,uname,date,uname,date,uname,date,uname,date))
          result = cursor.fetchone()
          return result
+
+
+    def getMostBookedUser(self):
+        cursor = self.conn.cursor()
+        query  = """select account_id,username,password,full_name,role, count(event_id) as number_of_bookings
+                    from is_invited natural join account
+                    group by account_id,username,password,full_name,role
+                    order by number_of_bookings desc limit 10; """
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
