@@ -40,9 +40,8 @@ class BaseOccupiedTimeslot:
             result = self.build_map_dict(occupied_tuple)
             return jsonify(result), 200
 
-    def insertOccupiedTimeslot(self, json):
+    def insertOccupiedTimeslot(self, event_id, json):
         timeslot_id = json['timeslot_id']
-        event_id = json['event_id']
         dao = OccupiedTimeslotDAO()
         if not isinstance(timeslot_id, int):
             timeslot_id = tuple(timeslot_id)

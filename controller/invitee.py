@@ -40,9 +40,22 @@ class BaseInvitee:
             result = self.build_map_dict(invitee_tuple)
             return jsonify(result), 200
 
-    def insertInvitee(self, json):
+    def insertInviteeWithJson(self, json):
         account_id = json['account_id']
         event_id = json['event_id']
+        dao = InviteeDAO()
+        if not isinstance(account_id, int):
+            account_id = tuple(account_id)
+            if len(account_id) > 1:
+                result = dao.insertMultipleInvitees(account_id, event_id)
+                return jsonify("Inserted row(s): " + str(result))
+
+        result = dao.insertInvitee(account_id, event_id)
+
+        return jsonify("Inserted row(s): " + str(result))
+
+    def insertInvitee(self, event_id, json):
+        account_id = json['account_id']
         dao = InviteeDAO()
         if not isinstance(account_id, int):
             account_id = tuple(account_id)
