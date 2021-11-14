@@ -47,7 +47,7 @@ class BaseEvent:
         dao = EventDAO()
         event_id = dao.createEvent(title, description, date, creator_id, room_id)
         result = self.build_attr_dict(event_id, title, description, date, room_id)
-        return jsonify(result), 201, event_id
+        return jsonify(result), 201
 
     def updateEvent(self, event_id, json):
         title = json['title']
