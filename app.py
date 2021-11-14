@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from controller.account import BaseAccount
+from controller.invitee import BaseInvitee
 from controller.room import BaseRoom
 from controller.event import BaseEvent
 
@@ -74,14 +75,33 @@ def handleEventById(event_id):  # put application's code here
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/event/invitees/<int:event_id>', methods=['GET', 'POST'])
-def handleInvitees(event_id):  # put application's code here
-    return 'Hello World!'
+@app.route('/redpush/invitee', methods=['GET', 'POST'])
+def handleInvitees():
+    if request.method == 'GET':
+        return BaseInvitee().getAllInvitees()
+    elif request.method == 'POST':
+        return BaseInvitee().insertInvitee(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/event/invitees/<int:event_id>/<int:account_id>', methods=['GET', 'PUT', 'DELETE'])
-def handleInviteeById(event_id, account_id):  # put application's code here
-    return 'Hello World!'
+@app.route('/redpush/invitee/<int:event_id>', methods=['GET'])
+def handleInviteesByEvent(event_id):
+    if request.method == 'GET':
+        return BaseInvitee().getAllInviteesByEvent(event_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/invitee/<int:event_id>/<int:account_id>', methods=['GET', 'PUT', 'DELETE'])
+def handleInviteeByUniqueId(event_id, account_id):
+    if request.method == 'GET':
+        return BaseInvitee().getInviteeByUniqueId(account_id, event_id)
+    if request.method == 'PUT':
+        return BaseInvitee().updateInvitee(account_id, event_id, request.json)
+    if request.method == 'DELETE':
+        return BaseInvitee().deleteInvitee(account_id, event_id)
+    return jsonify("Method Not Allowed"), 405
 
 
 # Operation 8: Find a time that is free for everyone
