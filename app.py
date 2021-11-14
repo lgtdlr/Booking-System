@@ -4,6 +4,7 @@ from controller.account import BaseAccount
 from controller.invitee import BaseInvitee
 from controller.room import BaseRoom
 from controller.event import BaseEvent
+from controller.occupies import BaseOccupiedTimeslot
 
 app = Flask(__name__)
 CORS(app)
@@ -54,7 +55,7 @@ def handleRoomById(room_id):
 
 
 @app.route('/redpush/event', methods=['GET', 'POST'])
-def handleEvents():  # put application's code here
+def handleEvents():  
     if request.method == 'GET':
         return BaseEvent().getAllEvents()
     elif request.method == 'POST':
@@ -64,7 +65,7 @@ def handleEvents():  # put application's code here
 
 
 @app.route('/redpush/event/<int:event_id>', methods=['GET', 'PUT', 'DELETE'])
-def handleEventById(event_id):  # put application's code here
+def handleEventById(event_id): 
     if request.method == 'GET':
         return BaseEvent().getEventById(event_id)
     elif request.method == 'PUT':
@@ -104,6 +105,35 @@ def handleInviteeByUniqueId(event_id, account_id):
     return jsonify("Method Not Allowed"), 405
 
 
+@app.route('/redpush/occupies', methods=['GET', 'POST'])
+def handleOccupiedTimeslots():
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getAllOccupiedTimeslots()
+    elif request.method == 'POST':
+        return BaseOccupiedTimeslot().insertOccupiedTimeslot(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/occupies/<int:event_id>', methods=['GET'])
+def handleOccupiedTimeslotsByEvent(event_id):
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getAllOccupiedTimeslotsByEvent(event_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/occupies/<int:event_id>/<int:timeslot_id>', methods=['GET', 'PUT', 'DELETE'])
+def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getOccupiedTimeslotByUniqueId(timeslot_id, event_id)
+    if request.method == 'PUT':
+        return BaseOccupiedTimeslot().updateOccupiedTimeslot(timeslot_id, event_id, request.json)
+    if request.method == 'DELETE':
+        return BaseOccupiedTimeslot().deleteOccupiedTimeslot(timeslot_id, event_id)
+    return jsonify("Method Not Allowed"), 405
+
+
 # Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame
 @app.route('/redpush/room/find-available-room', methods=['GET'])
 def findAvailableRoom():
@@ -134,6 +164,25 @@ def getAllDaySchedule(room_id):
         return BaseRoom().getAllDaySchedule(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
+
+# Operation 5: Give an all-day schedule for a user
+@app.route('/redpush/account/<account_id>/schedule', methods=['GET'])
+def getUserSchedule(account_id):
+    if request.method == 'GET':
+        return BaseAccount().getUserSchedule(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+#Operation 6: Create a meeting with 2+ people in a room
+@app.route('/redpush/event/<creator_id>/create-meeting', methods=['POST'])
+def createMeeting(creator_id):
+    if request.method == 'POST':
+        BaseInvitee().insertInvitee(request.json)
+                
+        return BaseEvent().addNewEvent(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405 
 
 
 # Operation 8: Find a time that is free for everyone
