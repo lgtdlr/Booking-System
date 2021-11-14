@@ -47,7 +47,7 @@ def handleRoomById(room_id):
     if request.method == 'GET':
         return BaseRoom().getRoomById(room_id)
     elif request.method == 'PUT':
-        return BaseRoom().updateRoom(request.json)
+        return BaseRoom().updateRoom(room_id, request.json)
     elif request.method == 'DELETE':
         return BaseRoom().deleteRoom(room_id)
     else:
@@ -161,7 +161,10 @@ def whoAppointedRoom(room_id):
 @app.route('/redpush/room/<room_id>/schedule', methods=['GET'])
 def getAllDaySchedule(room_id):
     if request.method == 'GET':
-        return BaseRoom().getAllDaySchedule(request.json)
+        role = BaseAccount().getAccountRole(request.json)
+        app.logger.info(role)
+        if role == 'Department Staff':
+            return BaseRoom().getAllDaySchedule(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 

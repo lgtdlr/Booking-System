@@ -59,11 +59,10 @@ class BaseRoom:
         result = self.build_attr_dict(room_id, name, capacity, type)
         return jsonify(result), 201
 
-    def updateRoom(self, json):
+    def updateRoom(self, room_id, json):
         name = json['name']
         capacity = json['capacity']
         type = json['type']
-        room_id = json['room_id']
         dao = RoomDAO()
         is_updated = dao.updateRoom(room_id, name, capacity, type)
         result = self.build_attr_dict(room_id, name, capacity, type)

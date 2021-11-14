@@ -31,7 +31,7 @@ class AccountDAO:
     def insertAccount(self, username, password, full_name, role):
         hashed_password = generate_password_hash(password, method='sha256')
         cursor = self.conn.cursor()
-        query = "INSERT INTO account (username, password ,full_name, role) VALUES (%s,%s,%s,%s) RETURNING account_id;"
+        query = "INSERT INTO account (username, password ,full_name, role) VALUES (%s,%s,%s,%s) ON CONFLICT DO NOTHING RETURNING account_id;"
         try:
             cursor.execute(query, (username, hashed_password, full_name, role,))
         except psycopg2.IntegrityError:
