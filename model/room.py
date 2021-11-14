@@ -84,7 +84,7 @@ class RoomDAO:
             self.conn.commit()
             return True
 
-    def findAvailableRoom(self,startTime,endTime,date):
+    def findAvailableRoom(self, start_time, end_time, date):
         cursor = self.conn.cursor()
         query = """SELECT name FROM room
                    WHERE room.room_id NOT IN (
@@ -96,13 +96,13 @@ class RoomDAO:
                    INNER JOIN event e on room.room_id = e.room_id
                    INNER JOIN occupies o on e.event_id = o.event_id
                    INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
-                   WHERE date = %s and start_time = %s and end_time = %s;
+                   WHERE date = %s and start_time = %s and end_time = %s);
                 """
-        cursor.execute(query, (startTime,endTime,date,startTime,endTime,date))
+        cursor.execute(query, (start_time, end_time, date, start_time, end_time, date))
         result = cursor.fetchall()
         return result
 
-    def whoAppointedRoom(self,rname,date,startTime,endTime):
+    def whoAppointedRoom(self, name, date, start_time, end_time):
         cursor = self.conn.cursor()
         query = """SELECT full_name FROM account
                    JOIN event e ON account.account_id = e.creator_id
@@ -111,11 +111,11 @@ class RoomDAO:
                    INNER JOIN  timeslot t ON t.timeslot_id = o.timeslot_id
                    WHERE name = %s AND date = %s AND start_time = %s AND end_time = %s;
                 """
-        cursor.execute(query,(rname,date,startTime,endTime))
+        cursor.execute(query, (name, date, start_time, end_time))
         result = cursor.fetchone()
         return result
 
-    def getAllDaySchedule(self,rname,date):
+    def getAllDaySchedule(self, name, date):
         cursor = self.conn.cursor()
         query = """
                     SELECT %s AS room_name, timeslot.start_time,timeslot.end_time,TRUE as available FROM timeslot WHERE timeslot.timeslot_id NOT IN (
@@ -128,7 +128,7 @@ class RoomDAO:
                     INNER JOIN event e on room.room_id = e.room_id
                     INNER JOIN occupies o on e.event_id = o.event_id
                     INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
-                    WHERE room.name = %s AND event.date = %s
+                    WHERE room.name = %s AND e.date = %s
                     )
                     UNION
                     SELECT room.name,timeslot.start_time,timeslot.end_time,FALSE as available FROM room
@@ -140,8 +140,8 @@ class RoomDAO:
                     INNER JOIN event e on room.room_id = e.room_id
                     INNER JOIN occupies o on e.event_id = o.event_id
                     INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
-                    WHERE room.name = %s AND event.date = %s
+                    WHERE room.name = %s AND e.date = %s
                 """
-        cursor.execute(query,(rname,rname,date,rname,date,rname,date,rname,date))
+        cursor.execute(query, (name, name, date, name, date, name, date, name, date))
         result = cursor.fetchone()
         return result
