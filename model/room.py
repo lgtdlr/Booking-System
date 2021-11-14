@@ -158,3 +158,22 @@ class RoomDAO:
         result = cursor.fetchall()
 
         return result
+
+
+
+    def get_most_bookings_in_room_by_user(self,account_id):
+        cursor = self.conn.cursor()
+        query = """ with uses_of_room_by_account_id as
+                    (select room_id, count(event_id) as room_uses
+                    from (room natural join event natural join
+                    is_invited natural join account)
+                    where account_id = 11 --user to check with
+                    group by room_id)
+                
+                    select room_id,name,capacity, type,room_uses
+                    from uses_of_room_by_account_id natural join room
+                    where room_uses = (select max(room_uses)
+                                       from uses_of_room_by_account_id)"""
+        cursor.execute(query,(account_id,))
+        result = cursor.fetchall()
+        return result

@@ -12,6 +12,14 @@ class BaseRoom:
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3]}
         return result
 
+    def build_map_dict_most_bookings_in_room(self, row):
+        result = {'room_id': row[0],
+                  'name': row[1],
+                  'capacity': row[2],
+                  'type': row[3],
+                  'room_uses':row[4]}
+        return result
+
     def build_alt_map_dict(self, row):
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3], 'start_time': row[4], 'end_time': row[5], 'available': row[6]}
         return result
