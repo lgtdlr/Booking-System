@@ -182,7 +182,7 @@ def createMeeting(creator_id):
         result = BaseEvent().addNewEvent(creator_id, request.json)
         BaseInvitee().insertInvitee(result[0].json['event_id'], request.json)
         BaseOccupiedTimeslot().insertOccupiedTimeslot(result[0].json['event_id'], request.json)
-        return result
+        return BaseEvent().getEventById(result[0].json['event_id'])
     else:
         return jsonify("Method Not Allowed"), 405
 
