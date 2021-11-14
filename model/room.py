@@ -147,3 +147,15 @@ class RoomDAO:
         cursor.execute(query, (name, name, date, name, date, name, date, name, date,))
         result = cursor.fetchall()
         return result
+
+    def getMostBookedRooms(self):
+        cursor = self.conn.cursor()
+        query = """ select room_id, name, count(event_id) as events_in_room
+                    from event natural join room
+                    group by room_id, name
+                    order by events_in_room desc limit 10;"""
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
