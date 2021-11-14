@@ -4,6 +4,7 @@ from controller.account import BaseAccount
 from controller.invitee import BaseInvitee
 from controller.room import BaseRoom
 from controller.event import BaseEvent
+from controller.occupies import BaseOccupiedTimeslot
 
 app = Flask(__name__)
 CORS(app)
@@ -101,6 +102,35 @@ def handleInviteeByUniqueId(event_id, account_id):
         return BaseInvitee().updateInvitee(account_id, event_id, request.json)
     if request.method == 'DELETE':
         return BaseInvitee().deleteInvitee(account_id, event_id)
+    return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/occupies', methods=['GET', 'POST'])
+def handleOccupiedTimeslots():
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getAllOccupiedTimeslots()
+    elif request.method == 'POST':
+        return BaseOccupiedTimeslot().insertOccupiedTimeslot(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/occupies/<int:event_id>', methods=['GET'])
+def handleOccupiedTimeslotsByEvent(event_id):
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getAllOccupiedTimeslotsByEvent(event_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/occupies/<int:event_id>/<int:timeslot_id>', methods=['GET', 'PUT', 'DELETE'])
+def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getOccupiedTimeslotByUniqueId(timeslot_id, event_id)
+    if request.method == 'PUT':
+        return BaseOccupiedTimeslot().updateOccupiedTimeslot(timeslot_id, event_id, request.json)
+    if request.method == 'DELETE':
+        return BaseOccupiedTimeslot().deleteOccupiedTimeslot(timeslot_id, event_id)
     return jsonify("Method Not Allowed"), 405
 
 
