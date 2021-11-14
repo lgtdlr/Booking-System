@@ -186,6 +186,36 @@ def setRoomAvailability():
     else:
         return jsonify("Method Not Allow"), 405
 
+@app.route('/redpush/event/busiest-hours',methods=['GET'])
+def getBusyTimes():
+    if request.method == 'GET':
+        return BaseEvent().getBusiestTimesSlots()
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/room/most-booked', methods=['GET'])
+def getMostBookedRooms():
+    if request.method == 'GET':
+        return BaseRoom().geMostBookedRooms()
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+@app.route('/redpush/account/booked-users', methods=['GET'])
+def getMostBookedUsers():
+    if request.method == 'GET':
+        return BaseAccount().getMostBookedUser()
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+@app.route('/redpush/account/<int:account_id>/bookings-with-user', methods=['GET'])
+def getMostBookingWithSelectedUser(account_id):
+    if request.method == 'GET':
+        return BaseAccount().getMost_Booking_With_User(account_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
