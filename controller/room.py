@@ -12,6 +12,14 @@ class BaseRoom:
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3]}
         return result
 
+    def build_map_dict_most_bookings_in_room(self, row):
+        result = {'room_id': row[0],
+                  'name': row[1],
+                  'capacity': row[2],
+                  'type': row[3],
+                  'room_uses':row[4]}
+        return result
+
     def build_alt_map_dict(self, row):
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3], 'start_time': row[4], 'end_time': row[5], 'available': row[6]}
         return result
@@ -115,6 +123,17 @@ class BaseRoom:
         result_list = []
         for row in rooms_list:
             obj = self.build_map_dict(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
+
+
+
+    def geMostBookedRooms_by_user(self,account_id):
+        dao =  RoomDAO()
+        rooms_list = dao.get_most_bookings_in_room_by_user(account_id)
+        result_list = []
+        for row in rooms_list:
+            obj = self.build_map_dict_most_bookings_in_room(row)
             result_list.append(obj)
         return jsonify(result_list), 200
 
