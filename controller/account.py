@@ -118,8 +118,8 @@ class BaseAccount:
         return jsonify(result_list), 200
 
 
-    def getMost_Booking_With_User(self,json):
-        account_id = json['account_id']
+    def getMost_Booking_With_User(self,account_id):
+
         dao = AccountDAO()
         user_list = dao.getMostBooking_with_selected_User(account_id)
         result_list = []
