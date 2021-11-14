@@ -12,6 +12,14 @@ class BaseEvent:
         result = {'event_id': event_id, 'title': title, 'description': description, 'date': date, 'room_id': room_id}
         return result
 
+
+    def build_map_dict_timeslot(self, row):
+        result = {'timeslot_id': row[0],
+                  'start_time': row[1],
+                  'end_time': row[2],
+                  'busiest_30_min': row[3]}
+        return result
+
     def getAllEvents(self):
         dao = EventDAO()
         room_list = dao.getAllEvents()
@@ -58,3 +66,14 @@ class BaseEvent:
             return jsonify("DELETED"), 200
         else:
             return jsonify("NOT FOUND"), 404
+
+
+    def getBusiestTimesSlots(self):
+        dao = EventDAO()
+        times_list = dao.getMostBusiestTimes()
+        result_list = []
+        for row in times_list:
+            obj = self.build_map_dict_timeslot(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
+
