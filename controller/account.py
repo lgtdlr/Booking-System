@@ -10,12 +10,13 @@ class BaseAccount:
         return result
 
 
-    def build_map_dict(self, row):
+    def build_map_dict_booked_users(self, row):
         result = {'account_id': row[0],
                   'username': row[1],
-                  'full_name': row[2],
-                  'role': row[3],
-                  'number_of_bookings':row[4]}
+                  'password': row[2],
+                  'full_name': row[3],
+                  'role' : row[4],
+                  'number_of_bookings':row[5]}
         return result
 
 
@@ -107,3 +108,10 @@ class BaseAccount:
         return jsonify(result), 200
 
     def getMostBookedUser(self):
+        dao = AccountDAO()
+        user_list = dao.getMostBookedUser()
+        result_list = []
+        for row in user_list:
+            obj = self.build_map_dict_booked_users(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
