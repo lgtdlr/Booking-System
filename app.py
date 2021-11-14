@@ -105,12 +105,10 @@ def handleInviteeByUniqueId(event_id, account_id):
     return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/occupies', methods=['GET', 'POST'])
+@app.route('/redpush/occupies', methods=['GET'])
 def handleOccupiedTimeslots():
     if request.method == 'GET':
         return BaseOccupiedTimeslot().getAllOccupiedTimeslots()
-    elif request.method == 'POST':
-        return BaseOccupiedTimeslot().insertOccupiedTimeslot(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -123,7 +121,7 @@ def handleOccupiedTimeslotsByEvent(event_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/occupies/<int:event_id>/<int:timeslot_id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/redpush/occupies/<int:event_id>/<int:timeslot_id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
 def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
     if request.method == 'GET':
         return BaseOccupiedTimeslot().getOccupiedTimeslotByUniqueId(timeslot_id, event_id)
@@ -131,6 +129,8 @@ def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
         return BaseOccupiedTimeslot().updateOccupiedTimeslot(timeslot_id, event_id, request.json)
     if request.method == 'DELETE':
         return BaseOccupiedTimeslot().deleteOccupiedTimeslot(timeslot_id, event_id)
+    elif request.method == 'POST':
+        return BaseOccupiedTimeslot().insertOccupiedTimeslot(event_id, request.json)
     return jsonify("Method Not Allowed"), 405
 
 
@@ -179,10 +179,10 @@ def getUserSchedule(username):
 
 
 # Operation 6: Create a meeting with 2+ people in a room
-@app.route('/redpush/event/<creator_id>/create-meeting', methods=['POST'])
+@app.route('/redpush/event/create-meeting', methods=['POST'])
 def createMeeting(creator_id):
     if request.method == 'POST':
-        result = BaseEvent().addNewEvent(creator_id, request.json)
+        result = BaseEvent().addNewEvent(request.json)
         BaseInvitee().insertInvitee(result[0].json['event_id'], request.json)
         BaseOccupiedTimeslot().insertOccupiedTimeslot(result[0].json['event_id'], request.json)
         return BaseEvent().getEventById(result[0].json['event_id'])
