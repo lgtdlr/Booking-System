@@ -144,13 +144,13 @@ def findAvailableRoom():
 
 
 # Operation 3: Find who appointed a room at a certain time
-@app.route('/redpush/room/<room_id>/who-appointed-room', methods=['GET'])
-def whoAppointedRoom(room_id):
+@app.route('/redpush/room/<room_name>/who-appointed-room', methods=['GET'])
+def whoAppointedRoom(room_name):
     if request.method == 'GET':
         role = BaseAccount().getAccountRole(request.json)
         app.logger.info(role)
         if role == 'Department Staff':
-            return BaseRoom().whoAppointedRoom(request.json)
+            return BaseRoom().whoAppointedRoom(room_name, request.json)
         else:
             return jsonify("The server understood the request, but is refusing to authorize it."), 403
     else:
@@ -158,13 +158,13 @@ def whoAppointedRoom(room_id):
 
 
 # Operation 4: Give an all-day schedule for a room
-@app.route('/redpush/room/<room_id>/schedule', methods=['GET'])
-def getAllDaySchedule(room_id):
+@app.route('/redpush/room/<room_name>/schedule', methods=['GET'])
+def getAllDaySchedule(room_name):
     if request.method == 'GET':
         role = BaseAccount().getAccountRole(request.json)
         app.logger.info(role)
         if role == 'Department Staff':
-            return BaseRoom().getAllDaySchedule(request.json)
+            return BaseRoom().getAllDaySchedule(room_name, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -180,7 +180,7 @@ def getUserSchedule(username):
 
 # Operation 6: Create a meeting with 2+ people in a room
 @app.route('/redpush/event/create-meeting', methods=['POST'])
-def createMeeting(creator_id):
+def createMeeting():
     if request.method == 'POST':
         result = BaseEvent().addNewEvent(request.json)
         BaseInvitee().insertInvitee(result[0].json['event_id'], request.json)

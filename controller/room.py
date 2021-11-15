@@ -97,8 +97,7 @@ class BaseRoom:
         result = dao.findAvailableRoom(start_time, end_time, date)
         return jsonify(result), 200
 
-    def whoAppointedRoom(self, json):
-        room_name = json['name']
+    def whoAppointedRoom(self, room_name, json):
         date = json['date']
         start_time = json['start_time']
         end_time = json['end_time']
@@ -106,13 +105,10 @@ class BaseRoom:
         result = dao.whoAppointedRoom(room_name, date, start_time, end_time)
         return jsonify(result), 200
 
-    def getAllDaySchedule(self, json):
-        room_name = json['name']
+    def getAllDaySchedule(self, room_name, json):
         date = json['date']
         dao = RoomDAO()
         result = dao.getAllDaySchedule(room_name, date)
-        # return jsonify(dumps(result, cls=PythonObjectEncoder))
-        # return jsonify((dumps(result, default=self.myconverter)))
         return jsonify(result), 200
 
 

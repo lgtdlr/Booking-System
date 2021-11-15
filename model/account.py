@@ -149,7 +149,7 @@ class AccountDAO:
                     INNER JOIN event e on i.account_id = e.event_id
                     INNER JOIN occupies o on e.event_id = o.event_id
                     INNER JOIN timeslot t2 on o.timeslot_id = t2.timeslot_id
-                    WHERE account.username = %s AND e.date = %s    
+                    WHERE account.username = %s AND e.date = %s ORDER BY start_time;    
                  '''
          cursor.execute(query, (uname,uname,date,uname,date,uname,date,uname,date))
          result = cursor.fetchall()
