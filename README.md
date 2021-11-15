@@ -6,6 +6,8 @@ Leonardo Torres De La Rosa - leonardo.torres5@upr.edu
 
 Roberto Carlos Hernandez Martinez - roberto.hernandez13@upr.edu
 
+Heroku Rest API Link: http://redpush.herokuapp.com/redpush/
+
 <!-- | Database Credentials |  |
 | ----------- | ----------- |
 | Host | ec2-52-70-107-254.compute-1.amazonaws.com |

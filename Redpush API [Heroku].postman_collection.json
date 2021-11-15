@@ -1,0 +1,1504 @@
+{
+	"info": {
+		"_postman_id": "ec7ae214-2ce3-469e-ad72-eac1ab8f3429",
+		"name": "Redpush API [Heroku]",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account (CRUD)",
+			"item": [
+				{
+					"name": "Create account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test2\",\r\n    \"password\": \"test\",\r\n    \"full_name\": \"Johnny Test\",\r\n    \"role\": \"Student\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read account by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/106",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"106"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all accounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin3\",\r\n    \"password\": \"admin\",\r\n    \"full_name\": \"Administrator\",\r\n    \"role\": \"Department Staff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/106",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"106"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/106",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"106"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invitee (CRUD)",
+			"item": [
+				{
+					"name": "Create invitee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_id\": 7,\r\n    \"event_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/invitee",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"invitee"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create invitee",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 1,\r\n    \"event_id\": \"12\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/invitee",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"invitee"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "\"Inserted row(s): 1\""
+						},
+						{
+							"name": "Create multiple invitees",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": [\r\n        1,\r\n        2,\r\n        3\r\n    ],\r\n    \"event_id\": \"12\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/invitee",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"invitee"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "\"Inserted row(s): 3\""
+						}
+					]
+				},
+				{
+					"name": "Read invitee by unique ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/invitee/2/7",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"invitee",
+								"2",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all invitees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/invitee",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"invitee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all invitees of event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/invitee/2",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"invitee",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update invitee",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_id\": 7,\r\n    \"event_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/invitee/2/7",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"invitee",
+								"2",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete invitee",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/invitee/3/7",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"invitee",
+								"3",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Room (CRUD)",
+			"item": [
+				{
+					"name": "Create room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"S-113\",\r\n    \"capacity\": \"120\",\r\n    \"type\": \"Amphitheatre\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read room by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/103",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update room",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"S-113\",\r\n    \"capacity\": \"60\",\r\n    \"type\": \"Classroom\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/113",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"113"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete room",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/103",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"103"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event (CRUD)",
+			"item": [
+				{
+					"name": "Create event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"creator_id\": 100,\r\n    \"title\": \"Birthday Party\",\r\n    \"description\": \"All-day party\",\r\n    \"date\": \"2021-11-14\",\r\n    \"room_id\": \"11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/event",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read event by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/event/76",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"event",
+								"76"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/event",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"After Party\",\r\n    \"description\": \"All-day party\",\r\n    \"date\": \"2021-11-15\",\r\n    \"room_id\": \"13\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/event/56",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"event",
+								"56"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/76",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"76"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Occupies (CRUD)",
+			"item": [
+				{
+					"name": "Create occupied timeslot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"timeslot_id\": 9\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/occupies/2",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"occupies",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create occupied timeslot",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"timeslot_id\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/occupies/2",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"occupies",
+										"2"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "\"Inserted row(s): 1\""
+						},
+						{
+							"name": "Create occupied timeslot",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"timeslot_id\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/occupies/2",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"occupies",
+										"2"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "\"Inserted row(s): 3\""
+						}
+					]
+				},
+				{
+					"name": "Read occupied timeslot by unique ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/occupies/2/8",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"occupies",
+								"2",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all occupied timeslots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/occupies",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"occupies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read all occupied timeslots of event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/occupies/2",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"occupies",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update occupied timeslot",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"timeslot_id\": 10,\r\n    \"event_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/occupies/2/8",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"occupies",
+								"2",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete occupied timeslot",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/occupies/2/10",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"occupies",
+								"2",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Operations",
+			"item": [
+				{
+					"name": "OP1: Register a new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test1\",\r\n    \"password\": \"test\",\r\n    \"full_name\": \"Johnny Test\",\r\n    \"role\": \"Student\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP2: Find an available room (lab, classroom, study space, etc.) at a time frame",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_id\": 100,\n    \"date\": \"2021-12-24\",\n    \"start_time\": \"12:30:00\",\n    \"end_time\": \"13:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/find-available-room",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"find-available-room"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP3: Find who appoint a room at a certain time frame",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_id\": 100,\n    \"date\": \"2022-06-01\",\n    \"start_time\": \"00:30:00\",\n    \"end_time\": \"12:30:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/S-113/who-appointed-room",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"S-113",
+								"who-appointed-room"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP4: Give an all-day schedule for a room",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_id\": 100,\n    \"date\": \"2022-06-01\",\n    \"room_id\": 68,\n    \"name\": \"Q-147\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/68/schedule",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"68",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP5: Give an all-day schedule for a user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2022-03-07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/lstotherth/schedule",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"lstotherth",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP6: Create a meeting with 2+ people in a room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Birthday Party\",\r\n    \"description\": \"All-day party\",\r\n    \"date\": \"2021-11-14\",\r\n    \"room_id\": \"11\",\r\n    \"creator_id\": 100,\r\n    \"account_id\": [\r\n        1,\r\n        2,\r\n        3\r\n    ],\r\n    \"timeslot_id\": [\r\n        3,\r\n        4,\r\n        5\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/event/create-meeting",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"event",
+								"create-meeting"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP8: Find a time that is free for everyone",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_ids\": [\r\n        15,\r\n        35\r\n    ],\r\n    \"dates\": [\r\n        \"2022-03-07\",\r\n        \"2022-03-07\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/find-available-time",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"find-available-time"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP9: Allow user to mark time space as \"Unavailable\"",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_id\": 101,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/set-unavailable",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"set-unavailable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP9: Allow user to mark time space as \"Unavailable\" / \"Available\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_id\": 101,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/set-availability",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"set-availability"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OP9: Allow user to mark time space as \"Unavailable\"",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 101,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/account/set-unavailable",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"account",
+										"set-unavailable"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "true"
+						},
+						{
+							"name": "OP9: Allow user to mark time space as \"Available\"",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 101,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/account/set-availability",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"account",
+										"set-availability"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "true"
+						}
+					]
+				},
+				{
+					"name": "OP10: Department Staff can mark time-space “Unavailable”/ “Available” for any type of room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_id\": 101,\r\n    \"room_id\": 1,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/set-availability",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"set-availability"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Set to available as Department Staff",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 101,\r\n    \"room_id\": 1,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/room/set-availability",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"room",
+										"set-availability"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "true"
+						},
+						{
+							"name": "Set to unavailable as Department Staff",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 101,\r\n    \"room_id\": 1,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/room/set-availability",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"room",
+										"set-availability"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "true"
+						},
+						{
+							"name": "Set to available as Student",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 10,\r\n    \"room_id\": 1,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/room/set-availability",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"room",
+										"set-availability"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "\"The server understood the request, but is refusing to authorize it.\""
+						},
+						{
+							"name": "Set to unavailable as Student",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"account_id\": 10,\r\n    \"room_id\": 1,\r\n    \"date\": \"2021-12-24\",\r\n    \"start_time\": \"00:30:00\",\r\n    \"end_time\": \"12:30:00\",\r\n    \"is_available\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://redpush.herokuapp.com/redpush/room/set-availability",
+									"protocol": "http",
+									"host": [
+										"redpush",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"redpush",
+										"room",
+										"set-availability"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "\"The server understood the request, but is refusing to authorize it.\""
+						}
+					]
+				},
+				{
+					"name": "OP12a: Get room where user has most events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/11/most-booked-room-by-user",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"11",
+								"most-booked-room-by-user"
+							]
+						},
+						"description": "Returns the room or rooms where an user has the most amount of events"
+					},
+					"response": []
+				},
+				{
+					"name": "OP12b: Maximum amount of events with user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/11/bookings-with-user",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"11",
+								"bookings-with-user"
+							]
+						},
+						"description": "Request that gets the maximum amount of same events that other each user have in common with the selected user"
+					},
+					"response": []
+				},
+				{
+					"name": "OP13a: get most busiest times",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/event/busiest-hours",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"event",
+								"busiest-hours"
+							]
+						},
+						"description": "Gets the top 5 most busiest time slots. Meaning the timeslots with the most active events"
+					},
+					"response": []
+				},
+				{
+					"name": "OP13b: get top 10 Most booked  users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/account/booked-users",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"account",
+								"booked-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OP13c: get most booked users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://redpush.herokuapp.com/redpush/room/most-booked",
+							"protocol": "http",
+							"host": [
+								"redpush",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"redpush",
+								"room",
+								"most-booked"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
