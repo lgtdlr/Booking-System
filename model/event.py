@@ -53,10 +53,10 @@ class EventDAO:
 
     def getMostBusiestTimes(self):
         cursor = self.conn.cursor()
-        query = """select timeslot_id,start_time::varchar,end_time::varchar, count(event_id) as busiest_30_min
+        query = """select timeslot_id,start_time::varchar,end_time::varchar, count(event_id) as times_scheduled
                     from occupies natural join timeslot
                     group by timeslot_id ,start_time::varchar,end_time::varchar
-                    order by busiest_30_min desc, timeslot_id desc limit 5;"""
+                    order by times_scheduled desc, timeslot_id desc limit 5;"""
         cursor.execute(query)
         result = cursor.fetchall()
         # for row in cursor:

@@ -17,7 +17,7 @@ class BaseEvent:
         result = {'timeslot_id': row[0],
                   'start_time': row[1],
                   'end_time': row[2],
-                  'busiest_30_min': row[3]}
+                  'times_scheduled': row[3]}
         return result
 
     def getAllEvents(self):
