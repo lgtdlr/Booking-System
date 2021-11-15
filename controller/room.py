@@ -1,6 +1,3 @@
-from datetime import datetime, time
-from json import dumps, loads, JSONEncoder, JSONDecoder
-import pickle
 from flask import jsonify
 
 from model.room import RoomDAO
@@ -17,20 +14,17 @@ class BaseRoom:
                   'name': row[1],
                   'capacity': row[2],
                   'type': row[3],
-                  'room_uses':row[4]}
+                  'room_uses': row[4]}
         return result
 
     def build_alt_map_dict(self, row):
-        result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3], 'start_time': row[4], 'end_time': row[5], 'available': row[6]}
+        result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3], 'start_time': row[4],
+                  'end_time': row[5], 'available': row[6]}
         return result
 
     def build_attr_dict(self, room_id, name, capacity, type):
         result = {'room_id': room_id, 'name': name, 'capacity': capacity, 'type': type}
         return result
-
-    # def myconverter(self, o):
-    #     if isinstance(o, time):
-    #         return o.__str__()
 
     def getAllRooms(self):
         dao = RoomDAO()
@@ -111,9 +105,8 @@ class BaseRoom:
         result = dao.getAllDaySchedule(room_name, date)
         return jsonify(result), 200
 
-
     def geMostBookedRooms(self):
-        dao =  RoomDAO()
+        dao = RoomDAO()
         rooms_list = dao.getMostBookedRooms()
         result_list = []
         for row in rooms_list:
@@ -121,14 +114,11 @@ class BaseRoom:
             result_list.append(obj)
         return jsonify(result_list), 200
 
-
-
-    def geMostBookedRooms_by_user(self,account_id):
-        dao =  RoomDAO()
+    def geMostBookedRooms_by_user(self, account_id):
+        dao = RoomDAO()
         rooms_list = dao.get_most_bookings_in_room_by_user(account_id)
         result_list = []
         for row in rooms_list:
             obj = self.build_map_dict_most_bookings_in_room(row)
             result_list.append(obj)
         return jsonify(result_list), 200
-
