@@ -9,19 +9,21 @@ class BaseAccount:
         result = {'account_id': row[0], 'username': row[1], 'full_name': row[2], 'role': row[3]}
         return result
 
-
     def build_map_dict_booked_users(self, row):
         result = {'account_id': row[0],
                   'username': row[1],
                   'password': row[2],
                   'full_name': row[3],
-                  'role' : row[4],
-                  'number_of_bookings':row[5]}
+                  'role': row[4],
+                  'number_of_bookings': row[5]}
         return result
-
 
     def build_attr_dict(self, account_id, username, full_name, role):
         result = {'account_id': account_id, 'username': username, 'full_name': full_name, 'role': role}
+        return result
+
+    def build_attr_dict_schedule(self, row):
+        result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2], 'available': row[3]}
         return result
 
     def getAllAccounts(self):
@@ -85,7 +87,11 @@ class BaseAccount:
         dates = json['dates']
         dao = AccountDAO()
         result = dao.findAvailableTime(account_ids, dates)
-        return jsonify(result), 200
+        result_list = []
+        for row in result:
+            obj = self.build_attr_dict_schedule(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
 
     def setAccountAvailability(self, json):
         account_id = json['account_id']
@@ -100,11 +106,15 @@ class BaseAccount:
             result = dao.setAccountUnavailable(account_id, date, start_time, end_time)
         return jsonify(result), 200
 
-    def getUserSchedule(self,username,json):
+    def getUserSchedule(self, username, json):
         date = json['date']
         dao = AccountDAO()
-        result = dao.getUserSchedule(username,date)
-        return jsonify(result), 200
+        result = dao.getUserSchedule(username, date)
+        result_list = []
+        for row in result:
+            obj = self.build_attr_dict_schedule(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
 
     def getMostBookedUser(self):
 
@@ -116,8 +126,7 @@ class BaseAccount:
             result_list.append(obj)
         return jsonify(result_list), 200
 
-
-    def getMost_Booking_With_User(self,account_id):
+    def getMost_Booking_With_User(self, account_id):
 
         dao = AccountDAO()
         user_list = dao.getMostBooking_with_selected_User(account_id)

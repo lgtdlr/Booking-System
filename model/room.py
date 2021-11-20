@@ -105,7 +105,8 @@ class RoomDAO:
 
     def whoAppointedRoom(self, name, date, start_time, end_time):
         cursor = self.conn.cursor()
-        query = """SELECT full_name FROM account
+        query = """SELECT account.account_id, account.username, account.full_name, account.role, e.date, 
+                   t.start_time::text, t.end_time::text FROM account
                    JOIN event e ON account.account_id = e.creator_id
                    INNER JOIN  room r ON r.room_id = e.room_id
                    INNER JOIN occupies o ON e.event_id = o.event_id
@@ -114,12 +115,13 @@ class RoomDAO:
                    AND (t.end_time-t.start_time >= '00:00:00'::time);
                 """
         cursor.execute(query, (name, date, start_time, end_time,))
-        result = cursor.fetchone()
+        result = cursor.fetchall()
         return result
 
     def getAllDaySchedule(self, name, date):
         cursor = self.conn.cursor()
-        query = """SELECT %s AS room_name, timeslot.start_time::text,timeslot.end_time::text,TRUE as available FROM timeslot 
+        query = """SELECT %s AS room_name, timeslot.start_time::text,timeslot.end_time::text,TRUE as available 
+                    FROM timeslot 
                     WHERE timeslot.timeslot_id NOT IN (
                     SELECT timeslot.timeslot_id FROM room
                     INNER JOIN is_room_unavailable iru on room.room_id = iru.room_id
@@ -159,9 +161,7 @@ class RoomDAO:
 
         return result
 
-
-
-    def get_most_bookings_in_room_by_user(self,account_id):
+    def get_most_bookings_in_room_by_user(self, account_id):
         cursor = self.conn.cursor()
         query = """ with uses_of_room_by_account_id as
                     (select room_id, count(event_id) as room_uses
@@ -174,6 +174,6 @@ class RoomDAO:
                     from uses_of_room_by_account_id natural join room
                     where room_uses = (select max(room_uses)
                                        from uses_of_room_by_account_id)"""
-        cursor.execute(query,(account_id,))
+        cursor.execute(query, (account_id,))
         result = cursor.fetchall()
         return result

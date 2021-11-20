@@ -22,6 +22,15 @@ class BaseRoom:
                   'end_time': row[5], 'available': row[6]}
         return result
 
+    def build_attr_dict_schedule(self, row):
+        result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2]}
+        return result
+
+    def build_attr_who_appointed(self, row):
+        result = {'account_id': row[0], 'username': row[1], 'full_name': row[2], 'role': row[3], 'date': row[4],
+                  'start_time': row[5], 'end_time': row[6]}
+        return result
+
     def build_attr_dict(self, room_id, name, capacity, type):
         result = {'room_id': room_id, 'name': name, 'capacity': capacity, 'type': type}
         return result
@@ -89,7 +98,11 @@ class BaseRoom:
         end_time = json['end_time']
         dao = RoomDAO()
         result = dao.findAvailableRoom(start_time, end_time, date)
-        return jsonify(result), 200
+        result_list = []
+        for row in result:
+            obj = self.build_map_dict(row)
+            result_list.append(obj)
+        return jsonify(result_list)
 
     def whoAppointedRoom(self, room_name, json):
         date = json['date']
@@ -97,13 +110,21 @@ class BaseRoom:
         end_time = json['end_time']
         dao = RoomDAO()
         result = dao.whoAppointedRoom(room_name, date, start_time, end_time)
-        return jsonify(result), 200
+        result_list = []
+        for row in result:
+            obj = self.build_attr_who_appointed(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
 
     def getAllDaySchedule(self, room_name, json):
         date = json['date']
         dao = RoomDAO()
         result = dao.getAllDaySchedule(room_name, date)
-        return jsonify(result), 200
+        result_list = []
+        for row in result:
+            obj = self.build_attr_dict_schedule(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
 
     def geMostBookedRooms(self):
         dao = RoomDAO()

@@ -5,13 +5,13 @@ from model.event import EventDAO
 class BaseEvent:
 
     def build_map_dict(self, row):
-        result = {'event_id': row[0], 'title': row[1], 'description': row[2], 'date': row[3], 'creator_id': row[4], 'room_id': row[5]}
+        result = {'event_id': row[0], 'title': row[1], 'description': row[2], 'date': row[3], 'creator_id': row[4],
+                  'room_id': row[5]}
         return result
 
     def build_attr_dict(self, event_id, title, description, date, room_id):
         result = {'event_id': event_id, 'title': title, 'description': description, 'date': date, 'room_id': room_id}
         return result
-
 
     def build_map_dict_timeslot(self, row):
         result = {'timeslot_id': row[0],
@@ -67,7 +67,6 @@ class BaseEvent:
         else:
             return jsonify("NOT FOUND"), 404
 
-
     def getBusiestTimesSlots(self):
         dao = EventDAO()
         times_list = dao.getMostBusiestTimes()
@@ -76,4 +75,3 @@ class BaseEvent:
             obj = self.build_map_dict_timeslot(row)
             result_list.append(obj)
         return jsonify(result_list), 200
-
