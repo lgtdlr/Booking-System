@@ -1,46 +1,46 @@
-from config.dbconfig import pg_config
+from backend.config.dbconfig import pg_config
 import psycopg2
 import psycopg2.extras
 
 
-class OccupiedTimeslotDAO:
+class InviteeDAO:
     def __init__(self):
         connection_url = "dbname=%s user=%s password=%s port=%s host='%s'" % (pg_config['dbname'], pg_config['user'],
                                                                               pg_config['password'],
                                                                               pg_config['dbport'], pg_config['dbhost'])
         self.conn = psycopg2.connect(connection_url)
 
-    def getAllOccupiedTimeslots(self):
+    def getAllInvitees(self):
         cursor = self.conn.cursor()
-        query = "SELECT timeslot_id, event_id FROM occupies;"
+        query = "SELECT account_id, event_id FROM is_invited;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getAllOccupiedTimeslotsByEvent(self, event_id):
+    def getAllInviteesByEvent(self, event_id):
         cursor = self.conn.cursor()
-        query = "SELECT timeslot_id, event_id from occupies WHERE event_id = %s;"
+        query = "SELECT account_id, event_id from is_invited WHERE event_id = %s;"
         cursor.execute(query, (event_id,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getOccupiedTimeslotByUniqueId(self, timeslot_id, event_id):
+    def getInviteeByUniqueId(self, account_id, event_id):
         cursor = self.conn.cursor()
-        query = "SELECT timeslot_id, event_id from occupies WHERE timeslot_id = %s AND event_id = %s;"
-        cursor.execute(query, (timeslot_id, event_id,))
+        query = "SELECT account_id, event_id from is_invited WHERE account_id = %s AND event_id = %s;"
+        cursor.execute(query, (account_id, event_id,))
         result = cursor.fetchone()
         return result
 
-    def insertOccupiedTimeslot(self, timeslot_id, event_id):
+    def insertInvitee(self, account_id, event_id):
         cursor = self.conn.cursor()
-        query = "INSERT INTO occupies (timeslot_id, event_Id) VALUES (%s,%s) ON CONFLICT DO NOTHING RETURNING " \
-                "timeslot_id, event_id;"
+        query = "INSERT INTO is_invited (account_id, event_Id) VALUES (%s,%s) ON CONFLICT DO NOTHING RETURNING " \
+                "account_id, event_id;"
         try:
-            cursor.execute(query, (timeslot_id, event_id,))
+            cursor.execute(query, (account_id, event_id,))
         except psycopg2.IntegrityError:
             self.conn.rollback()
             return None
@@ -49,13 +49,13 @@ class OccupiedTimeslotDAO:
             affected_rows = cursor.rowcount
             return affected_rows
 
-    def insertMultipleOccupiedTimeslots(self, timeslot_ids, event_id):
+    def insertMultipleInvitees(self, account_ids, event_id):
         values = []
-        for account in timeslot_ids:
+        for account in account_ids:
             values.append([account, event_id])
         cursor = self.conn.cursor()
         try:
-            query = "INSERT INTO occupies (timeslot_id, event_id) VALUES %s ON CONFLICT DO NOTHING;"
+            query = "INSERT INTO is_invited (account_id, event_id) VALUES %s ON CONFLICT DO NOTHING;"
             psycopg2.extras.execute_values(
                 cursor, query, values, template=None, page_size=100
             )
@@ -67,11 +67,11 @@ class OccupiedTimeslotDAO:
             affected_rows = cursor.rowcount
             return affected_rows
 
-    def updateOccupiedTimeslot(self, timeslot_id, event_id, new_timeslot_id, new_event_id):
+    def updateInvitee(self, account_id, event_id, new_account_id, new_event_id):
         cursor = self.conn.cursor()
-        query = "UPDATE occupies SET timeslot_id = %s, event_id = %s WHERE timeslot_id= %s AND event_id = %s;"
+        query = "UPDATE is_invited SET account_id = %s, event_id = %s WHERE account_id= %s AND event_id = %s;"
         try:
-            cursor.execute(query, (new_timeslot_id, new_event_id, timeslot_id, event_id,))
+            cursor.execute(query, (new_account_id, new_event_id, account_id, event_id,))
         except psycopg2.IntegrityError:
             self.conn.rollback()
             return False
@@ -80,11 +80,11 @@ class OccupiedTimeslotDAO:
             affected_rows = cursor.rowcount
             return affected_rows != 0
 
-    def deleteOccupiedTimeslot(self, timeslot_id, event_id):
+    def deleteInvitee(self, account_id, event_id):
         cursor = self.conn.cursor()
-        query = "DELETE FROM occupies WHERE timeslot_id = %s AND event_id = %s;"
+        query = "DELETE FROM is_invited WHERE account_id = %s AND event_id = %s;"
         try:
-            cursor.execute(query, (timeslot_id, event_id))
+            cursor.execute(query, (account_id, event_id))
         except psycopg2.IntegrityError:
             self.conn.rollback()
         else:
