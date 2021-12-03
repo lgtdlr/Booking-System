@@ -1,5 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
 from controller.account import BaseAccount
 from controller.invitee import BaseInvitee
 from controller.room import BaseRoom
@@ -7,6 +13,10 @@ from controller.event import BaseEvent
 from controller.occupies import BaseOccupiedTimeslot
 
 app = Flask(__name__)
+
+app.config["JWT_SECRET_KEY"] = "ak1dd32jk4798khj&$#*H(jnd(N(#HNDDN999#RH9asd#nn5q"
+jwt = JWTManager(app)
+
 CORS(app)
 
 
@@ -132,6 +142,18 @@ def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
     if request.method == 'DELETE':
         return BaseOccupiedTimeslot().deleteOccupiedTimeslot(timeslot_id, event_id)
     return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/account/login', methods=['GET', 'POST'])
+def login():
+    usernameInput = request.json['username']
+    passwordInput = request.json['password']
+    user = BaseAccount().getAccountByUsername(usernameInput)
+    if user:
+        password = user[0].json['password']
+        if passwordInput == password:
+            return jsonify(access_token=create_access_token(identity=usernameInput))
+    return jsonify({"msg": "Incorrect username or password"}), 401
 
 
 # Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame

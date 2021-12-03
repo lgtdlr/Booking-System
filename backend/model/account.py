@@ -14,7 +14,7 @@ class AccountDAO:
 
     def getAllAccounts(self):
         cursor = self.conn.cursor()
-        query = "SELECT account_id, username, full_name, role FROM account;"
+        query = "SELECT account_id, username, password, full_name, role FROM account;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -23,8 +23,15 @@ class AccountDAO:
 
     def getAccountById(self, account_id):
         cursor = self.conn.cursor()
-        query = "SELECT account_id, username, full_name, role from account WHERE account_id = %s;"
+        query = "SELECT account_id, username, password, full_name, role from account WHERE account_id = %s;"
         cursor.execute(query, (account_id,))
+        result = cursor.fetchone()
+        return result
+
+    def getAccountByUsername(self, username):
+        cursor = self.conn.cursor()
+        query = "SELECT account_id, username, password, full_name, role from account WHERE username = %s;"
+        cursor.execute(query, (username,))
         result = cursor.fetchone()
         return result
 
