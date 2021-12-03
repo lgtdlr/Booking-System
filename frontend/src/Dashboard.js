@@ -12,6 +12,10 @@ function BookMeeting(){
                                                 {"name": 3, "Counts": 3},
                                                 {"name": 4, "Counts": 2},
                                                 {"name": 5, "Counts": 1}]);
+    const loggedInUser = sessionStorage.getItem("token")
+    if (loggedInUser) {
+        const foundUser = JSON.parse(loggedInUser);
+    }
 
     return <Container style={{ height: 800 }}>
 

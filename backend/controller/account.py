@@ -6,7 +6,7 @@ from backend.model.account import AccountDAO
 class BaseAccount:
 
     def build_map_dict(self, row):
-        result = {'account_id': row[0], 'username': row[1], 'full_name': row[2], 'role': row[3]}
+        result = {'account_id': row[0], 'username': row[1], 'password': row[1], 'full_name': row[3], 'role': row[4]}
         return result
 
     def build_map_dict_booked_users(self, row):
@@ -38,6 +38,15 @@ class BaseAccount:
     def getAccountById(self, account_id):
         dao = AccountDAO()
         account_tuple = dao.getAccountById(account_id)
+        if not account_tuple:
+            return jsonify("Not Found"), 404
+        else:
+            result = self.build_map_dict(account_tuple)
+            return jsonify(result), 200
+
+    def getAccountByUsername(self, username):
+        dao = AccountDAO()
+        account_tuple = dao.getAccountByUsername(username)
         if not account_tuple:
             return jsonify("Not Found"), 404
         else:
