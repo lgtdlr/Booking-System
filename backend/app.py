@@ -152,7 +152,8 @@ def login():
     if user:
         password = user[0].json['password']
         if passwordInput == password:
-            return jsonify(access_token=create_access_token(identity=usernameInput))
+            return jsonify(access_token=create_access_token(identity=usernameInput),
+                           account_id=user[0].json['account_id'], username=user[0].json['username'])
     return jsonify({"msg": "Incorrect username or password"}), 401
 
 
@@ -192,10 +193,22 @@ def getAllDaySchedule(room_name):
 
 
 # Operation 5: Give an all-day schedule for a user
-@app.route('/redpush/account/<username>/schedule', methods=['GET'])
+@app.route('/redpush/account/<username>/schedule', methods=['POST'])
 def getUserSchedule(username):
-    if request.method == 'GET':
+    if request.method == 'POST':
         return BaseAccount().getUserSchedule(username, request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# Give all events and unavailable times of user
+@app.route('/redpush/account/events', methods=['GET'])
+@jwt_required()
+def getUserEvents():
+    if request.method == 'GET':
+        username = get_jwt_identity()
+        # flask.
+        return BaseAccount().getUserEvents(username)
     else:
         return jsonify("Method Not Allowed"), 405
 

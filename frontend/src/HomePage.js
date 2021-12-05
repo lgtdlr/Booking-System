@@ -9,7 +9,7 @@ function HomePage() {
     const [open, setOpen] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const token = sessionStorage.getItem("token");
+    let token = sessionStorage.getItem("token");
     console.log(open);
     const navigate = useNavigate()
     const handleChange = (event, newValue) => {
@@ -26,10 +26,11 @@ function HomePage() {
         .then(response => response.json())
         .then(data => {
             sessionStorage.setItem("token", data.access_token)
+            sessionStorage.setItem("account_id", data.account_id)
+            sessionStorage.setItem("username", data.username)
         });
 
     }
-
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to DB Demo</Header>
             <Modal

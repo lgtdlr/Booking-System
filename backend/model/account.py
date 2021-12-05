@@ -210,3 +210,44 @@ class AccountDAO:
         cursor.execute(query, (account_id,))
         result = cursor.fetchall()
         return result
+
+    def getUserEvents(self, username):
+        cursor = self.conn.cursor()
+        query = """WITH user_events AS (
+                    SELECT e.event_id, e.title as id, (e.date+t.start_time) AT TIME ZONE 'AST' as start_time, (e.date+t.end_time) AT TIME ZONE 'AST' as end_time FROM account
+                        INNER JOIN is_invited ii on account.account_id = ii.account_id INNER JOIN event e on ii.event_id = e.event_id
+                        INNER JOIN occupies o on e.event_id = o.event_id INNER JOIN timeslot t on o.timeslot_id = t.timeslot_id
+                    WHERE username = %s)
+                    select id, min(start_time) as begin_at, max(end_time) as end_at
+                    from (select ue.*, sum(startflag) over (partition by id order by start_time) as grp
+                          from (select ue.*,
+                                       (case when lag(end_time) over (partition by id order by start_time) >= start_time
+                                             then 0 else 1
+                                        end) as startflag
+                                from user_events ue
+                               ) ue
+                         ) ue
+                    group by id, grp;"""
+        cursor.execute(query, (username,))
+        result = cursor.fetchall()
+        return result
+
+    def getUserUnavailableTimes(self, username):
+        cursor = self.conn.cursor()
+        query = """WITH user_unavaiable_times AS (
+                    SELECT iau.date, 'Unavailable' as id, (iau.date+timeslot.start_time) AT TIME ZONE 'AST' as start_time, (iau.date+timeslot.end_time) AT TIME ZONE 'AST' as end_time FROM account
+                    NATURAL INNER JOIN is_account_unavailable iau NATURAL INNER JOIN timeslot WHERE username = %s)
+                    select id, min(start_time) as begin_at, max(end_time) as end_at
+                    from (select uat.*, sum(startflag) over (partition by id order by start_time) as grp
+                          from (select uat.*,
+                                       (case when lag(end_time) over (partition by id order by start_time) >= start_time
+                                             then 0 else 1
+                                        end) as startflag
+                                from user_unavaiable_times uat
+                               ) uat
+                         ) uat
+                    group by id, grp;"""
+        cursor.execute(query, (username,))
+        result = cursor.fetchall()
+        return result
+

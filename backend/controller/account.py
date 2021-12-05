@@ -18,12 +18,22 @@ class BaseAccount:
                   'number_of_bookings': row[5]}
         return result
 
+    def build_map_dict_user_events(self, row):
+        result = {'title': row[0],
+                  'start': row[1],
+                  'end': row[2]}
+        return result
+
     def build_attr_dict(self, account_id, username, full_name, role):
         result = {'account_id': account_id, 'username': username, 'full_name': full_name, 'role': role}
         return result
 
     def build_attr_dict_schedule(self, row):
         result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2], 'available': row[3]}
+        return result
+
+    def build_attr_dict_events(self, row):
+        result = {'event_title': row[0], 'start_time': row[1], 'end_time': row[2]}
         return result
 
     def getAllAccounts(self):
@@ -144,3 +154,17 @@ class BaseAccount:
             obj = self.build_map_dict_booked_users(row)
             result_list.append(obj)
         return jsonify(result_list), 200
+
+    def getUserEvents(self, username):
+        dao = AccountDAO()
+        event_list = dao.getUserEvents(username)
+        unavailable_times_list = dao.getUserUnavailableTimes(username)
+        result_list = []
+        for row in event_list:
+            obj = self.build_map_dict_user_events(row)
+            result_list.append(obj)
+        for row in unavailable_times_list:
+            obj = self.build_map_dict_user_events(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
+
