@@ -152,24 +152,23 @@ def login():
     if user:
         password = user[0].json['password']
         if passwordInput == password:
-            return jsonify(access_token=create_access_token(identity=usernameInput),
-                           account_id=user[0].json['account_id'], username=user[0].json['username'])
+            return jsonify(access_token=create_access_token(identity=usernameInput))
     return jsonify({"msg": "Incorrect username or password"}), 401
 
 
 # Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame
-@app.route('/redpush/room/find-available-room', methods=['GET'])
+@app.route('/redpush/room/find-available-room', methods=['POST'])
 def findAvailableRoom():
-    if request.method == 'GET':
+    if request.method == 'POST':
         return BaseRoom().findAvailableRoom(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
 
 # Operation 3: Find who appointed a room at a certain time
-@app.route('/redpush/room/<room_name>/who-appointed-room', methods=['GET'])
+@app.route('/redpush/room/<room_name>/who-appointed-room', methods=['POST'])
 def whoAppointedRoom(room_name):
-    if request.method == 'GET':
+    if request.method == 'POST':
         role = BaseAccount().getAccountRole(request.json)
         app.logger.info(role)
         if role == 'Department Staff':
@@ -181,9 +180,9 @@ def whoAppointedRoom(room_name):
 
 
 # Operation 4: Give an all-day schedule for a room
-@app.route('/redpush/room/<room_name>/schedule', methods=['GET'])
+@app.route('/redpush/room/<room_name>/schedule', methods=['POST'])
 def getAllDaySchedule(room_name):
-    if request.method == 'GET':
+    if request.method == 'POST':
         role = BaseAccount().getAccountRole(request.json)
         app.logger.info(role)
         if role == 'Department Staff':
@@ -226,9 +225,9 @@ def createMeeting():
 
 
 # Operation 8: Find a time that is free for everyone
-@app.route('/redpush/account/find-available-time', methods=['GET'])
+@app.route('/redpush/account/find-available-time', methods=['POST'])
 def findAvailableTime():
-    if request.method == 'GET':
+    if request.method == 'POST':
         return BaseAccount().findAvailableTime(request.json)
     else:
         return jsonify("Method Not Allowed"), 405

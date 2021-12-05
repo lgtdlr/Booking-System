@@ -32,10 +32,6 @@ class BaseAccount:
         result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2], 'available': row[3]}
         return result
 
-    def build_attr_dict_events(self, row):
-        result = {'event_title': row[0], 'start_time': row[1], 'end_time': row[2]}
-        return result
-
     def getAllAccounts(self):
         dao = AccountDAO()
         account_list = dao.getAllAccounts()
