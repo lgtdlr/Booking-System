@@ -5,15 +5,6 @@ import moment from 'moment';
 import {Button, Card, Container, Modal} from "semantic-ui-react";
 
 
-// Event {
-//     title: string,
-//         start: Date,
-//         end: Date,
-//         allDay?: boolean
-//     resource?: any,
-// }
-
-
 function Schedule(){
     const [dates, setDates] = useState([{
         'title': 'Selection',

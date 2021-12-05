@@ -8,14 +8,14 @@ import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recha
 
 function BookMeeting(){
     const [data, setData] = useState([{"name": 1, "Counts": 5},
-                                                {"name": 2, "Counts": 4},
-                                                {"name": 3, "Counts": 3},
-                                                {"name": 4, "Counts": 2},
-                                                {"name": 5, "Counts": 1}]);
-    const loggedInUser = sessionStorage.getItem("token")
-    if (loggedInUser) {
-        const foundUser = JSON.parse(loggedInUser);
-    }
+        {"name": 2, "Counts": 4},
+        {"name": 3, "Counts": 3},
+        {"name": 4, "Counts": 2},
+        {"name": 5, "Counts": 1}]);
+    // const loggedInUser = sessionStorage.getItem("token")
+    // if (loggedInUser) {
+    //     const foundUser = JSON.parse(loggedInUser);
+    // }
 
     return <Container style={{ height: 800 }}>
 

@@ -1,5 +1,6 @@
 import React, {Component, useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
+import {Route, BrowserRouter, Routes, useNavigate} from 'react-router-dom';
 
 
 
@@ -10,6 +11,7 @@ function HomePage() {
     const [password, setPassword] = useState("");
     const token = sessionStorage.getItem("token");
     console.log(open);
+    const navigate = useNavigate()
     const handleChange = (event, newValue) => {
         setOpen(true);
     }
@@ -25,7 +27,9 @@ function HomePage() {
         .then(data => {
             sessionStorage.setItem("token", data.access_token)
         });
+
     }
+
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to DB Demo</Header>
             <Modal
@@ -46,7 +50,20 @@ function HomePage() {
             </Modal>
             <Segment placeholder>
 
-                {(token && token!="" && token!=undefined) ? "You are already logged in" :
+                {(token && token!="" && token!=undefined) ?
+
+                  <Grid columns={2} relaxed='very' stackable>
+                      <Grid.Column>
+                          <p>You are already logged in.</p>
+                        <Button content='Press here to go to userview'
+                                    primary onClick={() => {
+                                        handleLogin()
+                                        navigate("/userview")
+                                    }}/>
+                      </Grid.Column>
+                  </Grid>
+                    :
+
                     <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
                         <Form>
@@ -68,7 +85,11 @@ function HomePage() {
                                 onChange={e => setPassword(e.target.value)}
                                 required
                             />
-                            <Button content='Login' primary onClick={handleLogin}/>
+                            <Button content='Login'
+                                    primary onClick={() => {
+                                        handleLogin()
+                                        navigate("/userview")
+                                    }}/>
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle'>
@@ -82,6 +103,7 @@ function HomePage() {
             </Segment>
 
         </Segment>
+
     )
 }
 
