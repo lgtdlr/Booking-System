@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from backend.model.room import RoomDAO
+from model.room import RoomDAO
 
 
 class BaseRoom:

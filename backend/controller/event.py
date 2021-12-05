@@ -1,5 +1,5 @@
 from flask import jsonify
-from backend.model.event import EventDAO
+from model.event import EventDAO
 
 
 class BaseEvent:

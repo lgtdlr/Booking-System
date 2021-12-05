@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from backend.model.account import AccountDAO
+from model.account import AccountDAO
 
 
 class BaseAccount:
