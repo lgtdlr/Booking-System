@@ -7,7 +7,6 @@ import {Route, BrowserRouter, Routes, useNavigate} from 'react-router-dom';
 import BookMeeting from "./BookMeeting";
 import Schedule from "./Schedule";
 import Dashboard from "./Dashboard";
-import NotLoggedIn from "./NotLoggedIn";
 import {navigate} from "react-big-calendar/lib/utils/constants";
 
 function UserView(){
