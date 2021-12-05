@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('./')  # Fast work around to fix VS code and Heroku paths
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
