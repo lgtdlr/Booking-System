@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from model.invitee import InviteeDAO
+from backend.model.invitee import InviteeDAO
 
 
 class BaseInvitee:

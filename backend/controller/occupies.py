@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from model.occupies import OccupiedTimeslotDAO
+from backend.model.occupies import OccupiedTimeslotDAO
 
 
 class BaseOccupiedTimeslot:
