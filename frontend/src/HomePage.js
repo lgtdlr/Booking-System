@@ -8,7 +8,7 @@ function HomePage() {
     const [open, setOpen] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const token = sessionStorage.getItem("token");
+    let token = sessionStorage.getItem("token");
     console.log(open);
     const handleChange = (event, newValue) => {
         setOpen(true);
@@ -24,6 +24,8 @@ function HomePage() {
         .then(response => response.json())
         .then(data => {
             sessionStorage.setItem("token", data.access_token)
+            sessionStorage.setItem("account_id", data.account_id)
+            sessionStorage.setItem("username", data.username)
         });
     }
 
@@ -46,7 +48,7 @@ function HomePage() {
             </Modal>
             <Segment placeholder>
 
-                {(token && token!="" && token!=undefined) ? "You are already logged in" :
+                {(token && token!="" && token!=undefined && token!="undefined") ? "You are already logged in" :
                     <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
                         <Form>
