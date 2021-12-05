@@ -54,7 +54,7 @@ class BaseAccount:
         dao = AccountDAO()
         account_tuple = dao.getAccountByUsername(username)
         if not account_tuple:
-            return jsonify("Not Found"), 404
+            return None
         else:
             result = self.build_map_dict(account_tuple)
             return jsonify(result), 200

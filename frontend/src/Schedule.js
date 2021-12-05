@@ -2,15 +2,23 @@ import React, {Component, useState} from 'react';
 import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import {Button, Card, Container, Modal} from "semantic-ui-react";
+import {Button, Card, Container, Form, Grid, Modal, Popup} from "semantic-ui-react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import ReactDOM from "react-dom";
+
 
 
 function Schedule(){
 
+    const navigate = useNavigate()
     const token = sessionStorage.getItem("token")
     const url = "http://127.0.0.1:5000/redpush"
+    const node = document.createElement("div");
+    const [open, setOpen] = useState(true);
+    const localizer = momentLocalizer(moment)
 
+    const [isAuth, setIsAuth] = useState(!!(token && token !== "undefined"));
     const [dates, setDates] = useState([{
         // 'title': 'Selection',
         // 'allDay': false,
@@ -25,9 +33,42 @@ function Schedule(){
 
     let events = {}
 
-    axios.get(url + '/account/events', requestOptions)
+    const popup = () => {
+        document.body.appendChild(node);
+          const PopupContent = () => {
+            return (
+              <Modal
+                        centered={false}
+                        open={open}
+                    >
+                        <Modal.Header>Not logged in</Modal.Header>
+                        <Modal.Content>
+                            <Modal.Description>
+                                You are not logged in or your session has expired.
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button onClick={() => {
+                                clear();
+                                navigate("/home")
+                            }}>OK</Button>
+                        </Modal.Actions>
+                    </Modal>
+            );
+          };
+
+          const clear = () => {
+            ReactDOM.unmountComponentAtNode(node);
+            node.remove();
+          }
+
+          ReactDOM.render(<PopupContent/>, node);
+    };
+
+    React.useEffect(() => {
+        axios.get(url + '/account/events', requestOptions)
       .then(function (response) {
-        console.log(response.data);
+
         events = response.data;
 
         for (let i = 0; i < events.length; i++) {
@@ -40,11 +81,17 @@ function Schedule(){
       })
       .catch(function (error) {
         console.log(error);
+        setIsAuth(false);
+        sessionStorage.removeItem("token");
+        popup();
       });
+    }, []);
 
 
-    const [open, setOpen] = useState(false);
-    const localizer = momentLocalizer(moment)
+
+
+
+
 
     return <Container style={{ height: 800 }}><Calendar
         localizer={localizer}

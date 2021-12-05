@@ -7,17 +7,18 @@ import {Route, BrowserRouter, Routes, useNavigate} from 'react-router-dom';
 import BookMeeting from "./BookMeeting";
 import Schedule from "./Schedule";
 import Dashboard from "./Dashboard";
+import NotLoggedIn from "./NotLoggedIn";
 import {navigate} from "react-big-calendar/lib/utils/constants";
 
 function UserView(){
-    const [isAuth, setIsAuth] = useState(false)
+    const [token, setToken] = useState(sessionStorage.getItem("token"));
+    const [isAuth, setIsAuth] = useState(!!(token && token !== "undefined"));
     const navigate = useNavigate()
 
   const handleLogOut = () => {
         sessionStorage.removeItem("token")
         navigate("/home")
   }
-
 
 
     const panes = [
