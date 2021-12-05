@@ -1,7 +1,3 @@
-import sys
-
-sys.path.append('./')  # Fast work around to fix VS code and Heroku paths
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -10,11 +6,11 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
-from controller.account import BaseAccount
-from controller.invitee import BaseInvitee
-from controller.room import BaseRoom
-from controller.event import BaseEvent
-from controller.occupies import BaseOccupiedTimeslot
+from backend.controller.account import BaseAccount
+from backend.controller.invitee import BaseInvitee
+from backend.controller.room import BaseRoom
+from backend.controller.event import BaseEvent
+from backend.controller.occupies import BaseOccupiedTimeslot
 
 app = Flask(__name__)
 
