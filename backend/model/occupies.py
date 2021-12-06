@@ -10,6 +10,15 @@ class OccupiedTimeslotDAO:
                                                                               pg_config['dbport'], pg_config['dbhost'])
         self.conn = psycopg2.connect(connection_url)
 
+    def getAllTimeslots(self):
+        cursor = self.conn.cursor()
+        query = "SELECT timeslot_id, start_time::text, end_time::text FROM timeslot;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getAllOccupiedTimeslots(self):
         cursor = self.conn.cursor()
         query = "SELECT timeslot_id, event_id FROM occupies;"
@@ -51,8 +60,10 @@ class OccupiedTimeslotDAO:
 
     def insertMultipleOccupiedTimeslots(self, timeslot_ids, event_id):
         values = []
-        for account in timeslot_ids:
-            values.append([account, event_id])
+        for timeslot_id in range(timeslot_ids[0],timeslot_ids[-1]):
+            values.append([timeslot_id, event_id])
+        # for account in timeslot_ids:
+        #     values.append([account, event_id])
         cursor = self.conn.cursor()
         try:
             query = "INSERT INTO occupies (timeslot_id, event_id) VALUES %s ON CONFLICT DO NOTHING;"
@@ -91,3 +102,4 @@ class OccupiedTimeslotDAO:
             affected_rows = cursor.rowcount
             self.conn.commit()
             return affected_rows != 0
+

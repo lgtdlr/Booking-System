@@ -9,9 +9,22 @@ class BaseOccupiedTimeslot:
         result = {'timeslot_id': row[0], 'event_id': row[1]}
         return result
 
+    def build_map_dict_timeslots(self, row):
+        result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2]}
+        return result
+
     def build_attr_dict(self, timeslot_id, event_id):
         result = {'timeslot_id': timeslot_id, 'event_id': event_id}
         return result
+
+    def getAllTimeslots(self):
+        dao = OccupiedTimeslotDAO()
+        occupied_list = dao.getAllTimeslots()
+        result_list = []
+        for row in occupied_list:
+            obj = self.build_map_dict_timeslots(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
 
     def getAllOccupiedTimeslots(self):
         dao = OccupiedTimeslotDAO()

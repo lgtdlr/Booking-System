@@ -54,11 +54,11 @@ class BaseInvitee:
 
         return jsonify("Inserted row(s): " + str(result))
 
-    def insertInvitee(self, event_id, json):
+    def insertInvitee(self, event_id, creator_id, json):
         account_id = json['account_id']
         dao = InviteeDAO()
         if not isinstance(account_id, int):
-            account_id = tuple(account_id)
+            account_id = tuple(account_id) + tuple((creator_id,))
             if len(account_id) > 1:
                 result = dao.insertMultipleInvitees(account_id, event_id)
                 return jsonify("Inserted row(s): " + str(result))

@@ -118,6 +118,14 @@ def handleInviteeByUniqueId(event_id, account_id):
     return jsonify("Method Not Allowed"), 405
 
 
+@app.route('/redpush/timeslot', methods=['GET'])
+def handleTimeslots():
+    if request.method == 'GET':
+        return BaseOccupiedTimeslot().getAllTimeslots()
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 @app.route('/redpush/occupies', methods=['GET'])
 def handleOccupiedTimeslots():
     if request.method == 'GET':
@@ -155,7 +163,11 @@ def login():
     if user:
         password = user[0].json['password']
         if passwordInput == password:
-            return jsonify(access_token=create_access_token(identity=usernameInput))
+            return jsonify(
+                access_token=create_access_token(identity=user[0].json['account_id'],
+                                                 additional_claims={"name": user[0].json['full_name'],
+                                                                    "username": usernameInput,
+                                                                    "role": user[0].json['role']}))
     return jsonify({"msg": "Incorrect username or password"}), 401
 
 
@@ -208,19 +220,21 @@ def getUserSchedule(username):
 @jwt_required()
 def getUserEvents():
     if request.method == 'GET':
-        username = get_jwt_identity()
+        account_id = get_jwt_identity()
         # flask.
-        return BaseAccount().getUserEvents(username)
+        return BaseAccount().getUserEvents(account_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
 
 # Operation 6: Create a meeting with 2+ people in a room
 @app.route('/redpush/event/create-meeting', methods=['POST'])
+@jwt_required()
 def createMeeting():
     if request.method == 'POST':
-        result = BaseEvent().addNewEvent(request.json)
-        BaseInvitee().insertInvitee(result[0].json['event_id'], request.json)
+        creator_id = get_jwt_identity()
+        result = BaseEvent().addNewEvent(creator_id, request.json)
+        BaseInvitee().insertInvitee(result[0].json['event_id'], creator_id, request.json)
         BaseOccupiedTimeslot().insertOccupiedTimeslot(result[0].json['event_id'], request.json)
         return BaseEvent().getEventById(result[0].json['event_id'])
     else:
