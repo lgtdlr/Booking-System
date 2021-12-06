@@ -64,8 +64,19 @@ class BaseAccount:
         password = json['password']
         full_name = json['full_name']
         role = json['role']
+        if (username == '') | (len(username) == 0) | (len(username) > 40):
+            return None
+        if (full_name == '') | (len(full_name) == 0) | (len(full_name) > 255):
+            return None
+        if (password == '') | (len(password) == 0):
+            return None
+        if (role != 'Student') & (role != 'Professor') & (role != 'Department Staff'):
+            return None
+
         dao = AccountDAO()
         account_id = dao.insertAccount(username, password, full_name, role)
+        if account_id is None:
+            return None
         result = self.build_attr_dict(account_id, username, full_name, role)
         return jsonify(result), 201
 
