@@ -8,6 +8,7 @@ import 'semantic-ui-css/semantic.min.css'
 import UserView from "./UserView";
 import Dashboard from "./Dashboard";
 
+
 ReactDOM.render(
     <BrowserRouter>
         <Routes>
