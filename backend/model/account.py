@@ -1,4 +1,3 @@
-# from werkzeug.security import generate_password_hash
 
 from backend.config.dbconfig import pg_config
 import psycopg2
@@ -36,7 +35,6 @@ class AccountDAO:
         return result
 
     def insertAccount(self, username, password, full_name, role):
-        # hashed_password = generate_password_hash(password, method='sha256')
         cursor = self.conn.cursor()
         query = "INSERT INTO account (username, password ,full_name, role) VALUES (%s,%s,%s,%s) " \
                 "ON CONFLICT DO NOTHING RETURNING account_id;"
@@ -53,13 +51,11 @@ class AccountDAO:
             except:
                 return None
 
-
     def updateAccount(self, account_id, username, password, full_name, role):
-        hashed_password = generate_password_hash(password, method='sha256')
         cursor = self.conn.cursor()
         query = "UPDATE account SET username = %s, password = %s, full_name = %s, role = %s WHERE account_id=%s;"
         try:
-            cursor.execute(query, (username, hashed_password, full_name, role, account_id,))
+            cursor.execute(query, (username, password, full_name, role, account_id,))
         except psycopg2.IntegrityError:
             self.conn.rollback()
             return False
@@ -254,4 +250,3 @@ class AccountDAO:
         cursor.execute(query, (account_id,))
         result = cursor.fetchall()
         return result
-
