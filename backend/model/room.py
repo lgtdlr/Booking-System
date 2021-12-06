@@ -84,22 +84,22 @@ class RoomDAO:
             self.conn.commit()
             return True
 
-    def findAvailableRoom(self, start_time, end_time, date):
+    def findAvailableRoom(self, start_time_id, end_time_id, date):
         cursor = self.conn.cursor()
         query = """SELECT room_id, name, capacity, type FROM room
                    WHERE room.room_id NOT IN (
                    SELECT room.room_id FROM room
                    INNER JOIN is_room_unavailable iru on room.room_id = iru.room_id
                    INNER JOIN timeslot on iru.timeslot_id = timeslot.timeslot_id
-                   WHERE date = %s and start_time = %s and end_time = %s
+                   WHERE date = %s and timeslot.timeslot_id = %s and timeslot.timeslot_id = %s
                    UNION SELECT room.room_id FROM room
                    INNER JOIN event e on room.room_id = e.room_id
                    INNER JOIN occupies o on e.event_id = o.event_id
                    INNER JOIN timeslot t on t.timeslot_id = o.timeslot_id
-                   WHERE date = %s AND (t.start_time >= %s::time AND t.end_time <= %s::time) 
+                   WHERE date = %s AND (t.timeslot_id >= %s AND t.timeslot_id <= %s) 
                    AND (t.end_time-t.start_time >= '00:00:00'::time));
                 """
-        cursor.execute(query, (date, start_time, end_time, date, start_time, end_time,))
+        cursor.execute(query, (date, start_time_id, end_time_id, date, start_time_id, end_time_id,))
         result = cursor.fetchall()
         return result
 
