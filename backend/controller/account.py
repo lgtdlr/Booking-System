@@ -3,10 +3,11 @@ from flask import jsonify
 from backend.model.account import AccountDAO
 
 
+
 class BaseAccount:
 
     def build_map_dict(self, row):
-        result = {'account_id': row[0], 'username': row[1], 'password': row[1], 'full_name': row[3], 'role': row[4]}
+        result = {'account_id': row[0], 'username': row[1], 'password': row[2], 'full_name': row[3], 'role': row[4]}
         return result
 
     def build_map_dict_booked_users(self, row):
@@ -62,6 +63,7 @@ class BaseAccount:
     def insertAccount(self, json):
         username = json['username']
         password = json['password']
+
         full_name = json['full_name']
         role = json['role']
         if (username == '') | (len(username) == 0) | (len(username) > 40):
