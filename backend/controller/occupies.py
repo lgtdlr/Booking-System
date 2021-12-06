@@ -54,15 +54,11 @@ class BaseOccupiedTimeslot:
             return jsonify(result), 200
 
     def insertOccupiedTimeslot(self, event_id, json):
-        timeslot_id = json['timeslot_id']
+        start_time_id = json['start_time_id']
+        end_time_id = json['end_time_id']
         dao = OccupiedTimeslotDAO()
-        if not isinstance(timeslot_id, int):
-            timeslot_id = tuple(timeslot_id)
-            if len(timeslot_id) > 1:
-                result = dao.insertMultipleOccupiedTimeslots(timeslot_id, event_id)
-                return jsonify("Inserted row(s): " + str(result))
-
-        result = dao.insertOccupiedTimeslot(timeslot_id, event_id)
+        result = dao.insertMultipleOccupiedTimeslots(start_time_id, end_time_id, event_id)
+        return jsonify("Inserted row(s): " + str(result))
 
         return jsonify("Inserted row(s): " + str(result))
 

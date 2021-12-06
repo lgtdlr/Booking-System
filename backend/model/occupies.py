@@ -58,9 +58,9 @@ class OccupiedTimeslotDAO:
             affected_rows = cursor.rowcount
             return affected_rows
 
-    def insertMultipleOccupiedTimeslots(self, timeslot_ids, event_id):
+    def insertMultipleOccupiedTimeslots(self, start_time_id, end_time_id, event_id):
         values = []
-        for timeslot_id in range(timeslot_ids[0],timeslot_ids[-1]):
+        for timeslot_id in range(start_time_id, end_time_id):
             values.append([timeslot_id, event_id])
         # for account in timeslot_ids:
         #     values.append([account, event_id])

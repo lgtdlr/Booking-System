@@ -3,7 +3,6 @@ from flask import jsonify
 from backend.model.account import AccountDAO
 
 
-
 class BaseAccount:
 
     def build_map_dict(self, row):
@@ -31,6 +30,10 @@ class BaseAccount:
 
     def build_attr_dict_schedule(self, row):
         result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2], 'available': row[3]}
+        return result
+
+    def build_attr_dict_schedule_simplified(self, row):
+        result = {'timeslot_id': row[0], 'start_time': row[1], 'end_time': row[2]}
         return result
 
     def getAllAccounts(self):
@@ -110,14 +113,20 @@ class BaseAccount:
             result = self.build_map_dict(account_tuple)
             return result['role']
 
-    def findAvailableTime(self, json):
+    def findAvailableTime(self, json, creator_id):
         account_ids = json['account_ids']
         dates = json['dates']
         dao = AccountDAO()
-        result = dao.findAvailableTime(account_ids, dates)
+        if not isinstance(account_ids, int):
+            account_id = tuple(account_ids) + tuple((creator_id,))
+        elif account_ids != '':
+            account_id = tuple((account_ids, creator_id,))
+        else:
+            account_id = tuple(creator_id, )
+        result = dao.findAvailableTime(account_id, dates)
         result_list = []
         for row in result:
-            obj = self.build_attr_dict_schedule(row)
+            obj = self.build_attr_dict_schedule_simplified(row)
             result_list.append(obj)
         return jsonify(result_list), 200
 
@@ -176,4 +185,3 @@ class BaseAccount:
             obj = self.build_map_dict_user_events(row)
             result_list.append(obj)
         return jsonify(result_list), 200
-
