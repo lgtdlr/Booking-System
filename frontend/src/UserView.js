@@ -8,6 +8,7 @@ import BookMeeting from "./BookMeeting";
 import Schedule from "./Schedule";
 import Dashboard from "./Dashboard";
 import {navigate} from "react-big-calendar/lib/utils/constants";
+import Edit from "./EditProfile";
 
 function UserView(){
     const [isAuth, setIsAuth] = useState(false)
@@ -19,8 +20,7 @@ function UserView(){
   }
 
 
-
-    const panes = [
+  const panes = [
         {
             menuItem: 'Booking', render: () => <BookMeeting/>
         },
@@ -32,6 +32,9 @@ function UserView(){
         },
         {
             menuItem: 'Dashboard', render : () => <Dashboard/>
+        },
+        {
+            menuItem: 'Edit Profile', render : () => <Edit/>
         }
     ]
 
@@ -40,12 +43,10 @@ function UserView(){
             <Menu secundary size={"small"}>
                 <Menu.Menu position={'right'}>
                     <Menu.Item>Home</Menu.Item>
-                    <Menu.Item>Contact Us</Menu.Item>
                     <Menu.Item onClick={handleLogOut}>Sign Out</Menu.Item>
                 </Menu.Menu>
             </Menu>
             <Tab panes={panes}/>
-
         </Container>
     )
 
