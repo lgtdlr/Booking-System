@@ -46,9 +46,13 @@ class AccountDAO:
             self.conn.rollback()
             return None
         else:
-            account_id = cursor.fetchone()[0]
-            self.conn.commit()
-            return account_id
+            try:
+                account_id = cursor.fetchone()[0]
+                self.conn.commit()
+                return account_id
+            except:
+                return None
+
 
     def updateAccount(self, account_id, username, password, full_name, role):
         hashed_password = generate_password_hash(password, method='sha256')

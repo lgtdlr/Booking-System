@@ -25,7 +25,10 @@ def handleAccounts():
     if request.method == 'GET':
         return BaseAccount().getAllAccounts()
     elif request.method == 'POST':
-        return BaseAccount().insertAccount(request.json)
+        result = BaseAccount().insertAccount(request.json)
+        if result is None:
+            return jsonify("Not registered"), 405
+        return result
     else:
         return jsonify("Method Not Allowed"), 405
 
