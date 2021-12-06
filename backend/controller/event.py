@@ -38,12 +38,12 @@ class BaseEvent:
             result = self.build_map_dict(event_tuple)
             return jsonify(result), 200
 
-    def addNewEvent(self, json):
+    def addNewEvent(self, creator_id, json):
+        creator_id = creator_id
         title = json['title']
         description = json['description']
         date = json['date']
         room_id = json['room_id']
-        creator_id = json['creator_id']
         dao = EventDAO()
         event_id = dao.createEvent(title, description, date, creator_id, room_id)
         result = self.build_attr_dict(event_id, title, description, date, room_id)

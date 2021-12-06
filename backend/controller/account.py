@@ -162,10 +162,10 @@ class BaseAccount:
             result_list.append(obj)
         return jsonify(result_list), 200
 
-    def getUserEvents(self, username):
+    def getUserEvents(self, account_id):
         dao = AccountDAO()
-        event_list = dao.getUserEvents(username)
-        unavailable_times_list = dao.getUserUnavailableTimes(username)
+        event_list = dao.getUserEvents(account_id)
+        unavailable_times_list = dao.getUserUnavailableTimes(account_id)
         result_list = []
         for row in event_list:
             obj = self.build_map_dict_user_events(row)
