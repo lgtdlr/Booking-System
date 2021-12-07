@@ -28,6 +28,13 @@ class RoomDAO:
         result = cursor.fetchone()
         return result
 
+    def getRoomIdByName(self, name):
+        cursor = self.conn.cursor()
+        query = "SELECT room_id from room WHERE name = %s;"
+        cursor.execute(query, (name,))
+        result = cursor.fetchone()
+        return result
+
     def insertRoom(self, name, capacity, type):
         cursor = self.conn.cursor()
         query = "insert into room (name, capacity, type) values (%s,%s,%s) returning room_id;"
@@ -40,6 +47,27 @@ class RoomDAO:
         cursor = self.conn.cursor()
         query = "update room set name = %s, capacity = %s, type = %s where room_id=%s;"
         cursor.execute(query, (name, capacity, type, room_id))
+        self.conn.commit()
+        return True
+
+    def updateRoomName(self, room_id, name):
+        cursor = self.conn.cursor()
+        query = "update room set name = %s where room_id=%s;"
+        cursor.execute(query, (name, room_id))
+        self.conn.commit()
+        return True
+
+    def updateRoomCapacity(self, room_id, capacity):
+        cursor = self.conn.cursor()
+        query = "update room set capacity = %s where room_id=%s;"
+        cursor.execute(query, (capacity, room_id))
+        self.conn.commit()
+        return True
+
+    def updateRoomType(self, room_id, type):
+        cursor = self.conn.cursor()
+        query = "update room set type = %s where room_id=%s;"
+        cursor.execute(query, (type, room_id))
         self.conn.commit()
         return True
 

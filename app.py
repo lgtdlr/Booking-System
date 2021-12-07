@@ -1,3 +1,4 @@
+import flask
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -5,6 +6,7 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
+from flask_jwt_extended import get_jwt
 
 from backend.controller.account import BaseAccount
 from backend.controller.invitee import BaseInvitee
@@ -170,16 +172,26 @@ def login():
                                                                     "role": user[0].json['role']}))
     return jsonify({"msg": "Incorrect username or password"}), 401
 
+
+
 @app.route('/redpush/account/edit', methods=['PUT'])
 @jwt_required()
 def editInfo():
     user_id = get_jwt_identity()
     user_role = BaseAccount().getAccountById(user_id)
-
-
-
     return BaseAccount().updateAccount(user_id, request.json, user_role[0].json['role'])
 
+
+@app.route('/redpush/account/edit-room', methods=['PUT'])
+@jwt_required()
+def editRoom():
+   claims = get_jwt()
+   role = claims["role"]
+   if role != "Department Staff":
+         return jsonify("The server understood the request, but is refusing to authorize it."), 403
+   else:
+        room_id = BaseRoom().getRoomIdByName(request.json['oldname'])
+        return BaseRoom().updateRoom(room_id[0].json['room_id'], request.json)
 
 
 # Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame

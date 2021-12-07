@@ -35,6 +35,10 @@ class BaseRoom:
         result = {'room_id': room_id, 'name': name, 'capacity': capacity, 'type': type}
         return result
 
+    def build_map_dict_id(self, row):
+        result = {'room_id': row[0]}
+        return result
+
     def getAllRooms(self):
         dao = RoomDAO()
         room_list = dao.getAllRooms()
@@ -53,6 +57,15 @@ class BaseRoom:
             result = self.build_map_dict(room_tuple)
             return jsonify(result), 200
 
+    def getRoomIdByName(self, name):
+        dao = RoomDAO()
+        room_tuple = dao.getRoomIdByName(name)
+        if not room_tuple:
+            return jsonify("Not Found"), 404
+        else:
+            result = self.build_map_dict_id(room_tuple)
+            return jsonify(result), 200
+
     def addNewRoom(self, json):
         name = json['name']
         capacity = json['capacity']
@@ -67,7 +80,12 @@ class BaseRoom:
         capacity = json['capacity']
         type = json['type']
         dao = RoomDAO()
-        is_updated = dao.updateRoom(room_id, name, capacity, type)
+        if name != '':
+            dao.updateRoomName(room_id, name)
+        if capacity != '':
+            dao.updateRoomCapacity(room_id, capacity)
+        if type != '':
+            dao.updateRoomType(room_id, type)
         result = self.build_attr_dict(room_id, name, capacity, type)
         return jsonify(result), 200
 
