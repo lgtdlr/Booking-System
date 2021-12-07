@@ -6,7 +6,7 @@ import {Button, Card, Container, Modal} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import axios from "axios";
 
-var mostBookingsWith = [];
+let mostBookingsWith = [];
 
 async function getMostBookingWithSelectedUser() {
     const token = sessionStorage.getItem("token");
@@ -14,7 +14,7 @@ async function getMostBookingWithSelectedUser() {
     const requestOptions = {
         headers: { Authorization: "Bearer " + token }
     };
-    axios.get(url+'/account/bookings-with-user', requestOptions).then(function
+    await axios.get(url+'/account/bookings-with-user', requestOptions).then(function
         (response) {
         mostBookingsWith = response.data
     })
@@ -28,8 +28,7 @@ function BookMeeting(){
                                                 {"name": 4, "Counts": 2},
                                                 {"name": 5, "Counts": 1}]);
     useEffect(() => {
-        getMostBookingWithSelectedUser().then(r => {
-
+        getMostBookingWithSelectedUser().then(_ => {
             setData(mostBookingsWith)
             console.log("Bookings with" + mostBookingsWith)
         })
@@ -44,7 +43,7 @@ function BookMeeting(){
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="Meetings" fill="#8884d8" />
+            <Bar dataKey="Counts" fill="#8884d8" />
         </BarChart>
     </Container>
 
