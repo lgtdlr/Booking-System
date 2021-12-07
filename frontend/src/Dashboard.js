@@ -9,6 +9,7 @@ import axios from "axios";
 let mostBookingsWith = [];
 let mostBookedUsers = [];
 let mostBookingsIn_Room_by_Registered_User = [];
+let top_10_Booked_Rooms = [];
 
 async function getMostBookingWithSelectedUser() {
     const token = sessionStorage.getItem("token");
@@ -48,6 +49,15 @@ async function getMostBooking_InRoom_WithSelectedUser() {
 }
 
 
+async function getMostBookedRooms(){
+    const url = "http://127.0.0.1:5000/redpush";
+
+    await axios.get(url+'/room/most-booked').then(function
+        (response) {
+        top_10_Booked_Rooms = response.data
+    })
+}
+
 
 function BookMeeting(){
         //data represents users with whom registered has the most bookings with
@@ -62,6 +72,10 @@ function BookMeeting(){
 
 
     const [mostBookedRoom_by_user,setMostBookedRoom] = useState(
+        [{"name": 1, "room_uses": 2}]
+    );
+
+    const [ten_most_Booked_Rooms,set_10_MostBookedRooms] = useState(
         [{"name": 1, "room_uses": 2}]
     );
 
@@ -82,6 +96,13 @@ function BookMeeting(){
         getMostBooking_InRoom_WithSelectedUser().then( () =>{
             setMostBookedRoom(mostBookingsIn_Room_by_Registered_User)
             console.log(mostBookingsIn_Room_by_Registered_User)
+            }
+
+        )
+
+        getMostBookedRooms().then(   ()=> {
+            set_10_MostBookedRooms(top_10_Booked_Rooms)
+            console.log(top_10_Booked_Rooms)
             }
 
         )
@@ -128,6 +149,18 @@ function BookMeeting(){
          <List horizontal ordered> {mostBookedRoom_by_user.map (item=>
       (<List.Item key={item.account_id}>
           <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
+          <List.Content>
+             <List.Header>{item.name}</List.Header>
+              Room uses {item.room_uses}
+          </List.Content>
+        </List.Item>))}
+      </List>
+
+
+    <Header as='h1'> These are the top 10 most used rooms </Header>
+         <List horizontal ordered> {ten_most_Booked_Rooms.map (item=>
+      (<List.Item key={item.account_id}>
+
           <List.Content>
              <List.Header>{item.name}</List.Header>
               Room uses {item.room_uses}
