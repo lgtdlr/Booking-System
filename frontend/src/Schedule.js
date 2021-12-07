@@ -54,7 +54,7 @@ async function getAllEventInvitees(url, token, event_id) {
 
 function Schedule(){
 
-    const url = "http://127.0.0.1:5000/redpush"
+    const url = "https://redpush.herokuapp.com/redpush"
     const token = sessionStorage.getItem("token")
     const navigate = useNavigate()
     const node = document.createElement("div");
