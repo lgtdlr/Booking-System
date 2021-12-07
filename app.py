@@ -15,6 +15,7 @@ from backend.controller.occupies import BaseOccupiedTimeslot
 app = Flask(__name__)
 
 app.config["JWT_SECRET_KEY"] = "ak1dd32jk4798khj&$#*H(jnd(N(#HNDDN999#RH9asd#nn5q"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 jwt = JWTManager(app)
 
 CORS(app)
@@ -265,9 +266,11 @@ def findAvailableTime():
 
 # Operation 9: Allow user to mark time-space as “Unavailable” / "Available"
 @app.route('/redpush/account/set-availability', methods=['POST'])
+@jwt_required()
 def setUserAvailability():
     if request.method == 'POST':
-        return BaseAccount().setAccountAvailability(request.json)
+        account_id = get_jwt_identity()
+        return BaseAccount().setAccountAvailability(account_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -310,9 +313,11 @@ def getMostBookedUsers():
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/account/<int:account_id>/bookings-with-user', methods=['GET'])
-def getMostBookingWithSelectedUser(account_id):
+@app.route('/redpush/account/bookings-with-user', methods=['GET'])
+@jwt_required()
+def getMostBookingWithSelectedUser():
     if request.method == 'GET':
+        account_id = get_jwt_identity()
         return BaseAccount().getMost_Booking_With_User(account_id)
     else:
         return jsonify("Method Not Allowed"), 405

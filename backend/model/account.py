@@ -143,7 +143,7 @@ class AccountDAO:
     def setAccountUnavailable(self, account_id, date, start_time, end_time):
         cursor = self.conn.cursor()
         query = "INSERT INTO is_account_unavailable SELECT %s as account_id, t.timeslot_id, %s as date " \
-                "FROM timeslot t WHERE (t.start_time >= %s::time AND t.end_time <= %s::time) " \
+                "FROM timeslot t WHERE (t.timeslot_id >= %s AND t.timeslot_id <= %s) " \
                 "AND (t.end_time-t.start_time >= '00:00:00'::time) ON CONFLICT DO NOTHING;"
         try:
             cursor.execute(query, (account_id, date, start_time, end_time,))
@@ -160,7 +160,7 @@ class AccountDAO:
                 "(SELECT iau.account_id FROM is_account_unavailable iau " \
                 "INNER JOIN timeslot t on t.timeslot_id = iau.timeslot_id " \
                 "WHERE account_id = %s AND date = %s " \
-                "AND (t.start_time >= %s::time AND t.end_time <= %s::time) " \
+                "AND (t.timeslot_id >= %s AND t.timeslot_id <= %s) " \
                 "AND (t.end_time-t.start_time >= '00:00:00'::time));"
         try:
             cursor.execute(query, (account_id, date, start_time, end_time,))

@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 import {useNavigate} from "react-router-dom";
 import _ from 'lodash';
 import BookingFormContainer from "./components/booking-form";
+import SetUnavailableContainer from "./components/set-unavailable-form";
 
 function BookMeeting(){
     const navigate = useNavigate();
@@ -28,6 +29,7 @@ function BookMeeting(){
     const [allTimeslots, setAllTimeslots] = useState([]);
     const [invitees, setInvitees] = useState([]);
     const [allEvents, setAllEvents] = useState([]);
+    const [unavailableOpen, setUnavailableOpen] = useState(false);
     const [open, setOpen] = useState(false);
     const localizer = momentLocalizer(moment);
     const node = document.createElement("div");
@@ -135,7 +137,7 @@ function BookMeeting(){
 
     React.useEffect(() => {
         axios.get(url + '/account/events', requestOptions)
-      .then(function (response) {
+            .then(function (response) {
 
         events = response.data;
 
@@ -235,6 +237,33 @@ function BookMeeting(){
                     }}>Cancel</Button>
                 </Modal.Actions>
             </Modal>
+        <Modal
+                centered={false}
+                open={unavailableOpen}
+                onClose={() => {
+                    setUnavailableOpen(false)
+                    if (newEvent !== {}) {
+                            allEvents.pop();
+                        }
+                        setNewEvent({})
+                }}
+                onOpen={() => setUnavailableOpen(true)}
+            >
+                <Modal.Header>SET AVAILABILITY</Modal.Header>
+                <Modal.Content>
+                    <Modal.Description>
+                        Set time-space as unavailable or available
+                        <h1> </h1>
+                    </Modal.Description>
+                    <SetUnavailableContainer />
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button onClick={() => {
+                        setUnavailableOpen(false)
+                        setNewEvent({})
+                    }}>Cancel</Button>
+                </Modal.Actions>
+            </Modal>
         <Container fluid>
         <Button
             fluid
@@ -242,7 +271,7 @@ function BookMeeting(){
         > Book Meeting </Button>
         <Button
             fluid
-            onClick={() => {setOpen(true)}}
+            onClick={() => {setUnavailableOpen(true)}}
         > Mark as unavailable</Button>
     </Container>
     </Container>
