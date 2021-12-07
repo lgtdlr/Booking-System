@@ -185,8 +185,19 @@ function BookMeeting(){
         </List.Item>))}
       </List>
 
+    <Container style={{ height: 300}}>
 
+        <BarChart width={1130} height={250} data={ten_most_Booked_Rooms}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="room_uses" fill="#8884d8" />
+        </BarChart>
+    </Container>
 
+    {/*List and Chart for the top 5 most busiest hours*/}
     <Header as='h1'> These are the top 5 busiest hours </Header>
          <List horizontal ordered> {top_5_busiest_Hours.map (item=>
       (<List.Item key={item.timeslot_id}>
@@ -211,6 +222,9 @@ function BookMeeting(){
         </BarChart>
     </Container>
 
+
+
+    {/*List and chart for the Top ten most booked user*/}
     <Header as='h1'> Here are the top 10 most booked users </Header>
          <List  ordered> {mostBooked.map (item=>
           (<List.Item key={item.account_id}>
