@@ -2,13 +2,15 @@ import React, {Component, useState} from 'react';
 import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import {Button, Card, Container, Modal, Tab,Dropdown,Menu} from "semantic-ui-react";
+import {Button, Card, Container, Modal, Tab,Dropdown,Menu,Confirm} from "semantic-ui-react";
 import {Route, BrowserRouter, Routes, useNavigate} from 'react-router-dom';
 import BookMeeting from "./BookMeeting";
 import Schedule from "./Schedule";
 import Dashboard from "./Dashboard";
 import {navigate} from "react-big-calendar/lib/utils/constants";
 import Edit from "./EditProfile";
+import EditRoom from "./EditRoom";
+import RoomSchedule from "./RoomSchedule";
 
 function UserView(){
     const [token, setToken] = useState(sessionStorage.getItem("token"));
@@ -29,7 +31,11 @@ function UserView(){
             menuItem: 'Schedule', render: () => <Schedule/>
         },
         {
-            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
+            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><EditRoom/></Tab.Pane>
+        },
+        {
+          menuItem: 'Room Schedule', render: () => <RoomSchedule/>
+
         },
         {
             menuItem: 'Dashboard', render : () => <Dashboard/>
