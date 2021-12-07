@@ -94,10 +94,10 @@ class BaseRoom:
 
     def findAvailableRoom(self, json):
         date = json['date']
-        start_time = json['start_time']
-        end_time = json['end_time']
+        start_time_id = json['start_time_id']
+        end_time_id = json['end_time_id']
         dao = RoomDAO()
-        result = dao.findAvailableRoom(start_time, end_time, date)
+        result = dao.findAvailableRoom(start_time_id, end_time_id, date)
         result_list = []
         for row in result:
             obj = self.build_map_dict(row)

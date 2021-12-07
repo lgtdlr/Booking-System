@@ -118,12 +118,14 @@ class AccountDAO:
     def findAvailableTime(self, account_ids, dates):
         cursor = self.conn.cursor()
         accounts = tuple(account_ids)
-        if len(dates) < 2:
-            date1 = dates[0]
-            date2 = dates[0]
-        else:
-            date1 = dates[0]
-            date2 = dates[1]
+        date1 = dates
+        date2 = dates
+        # if len(dates) < 2:
+        #     date1 = dates[0]
+        #     date2 = dates[0]
+        # else:
+        #     date1 = dates[0]
+        #     date2 = dates[1]
         query = '''SELECT t.timeslot_id, t.start_time::text, t.end_time::text FROM timeslot t WHERE timeslot_id NOT IN
                 (SELECT t.timeslot_id FROM account a INNER JOIN is_invited ii on a.account_id = ii.account_id
                 INNER JOIN event e on e.event_id = ii.event_id INNER JOIN occupies o on e.event_id = o.event_id

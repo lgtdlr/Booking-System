@@ -254,9 +254,11 @@ def createMeeting():
 
 # Operation 8: Find a time that is free for everyone
 @app.route('/redpush/account/find-available-time', methods=['POST'])
+@jwt_required()
 def findAvailableTime():
     if request.method == 'POST':
-        return BaseAccount().findAvailableTime(request.json)
+        creator_id = get_jwt_identity()
+        return BaseAccount().findAvailableTime(request.json, creator_id)
     else:
         return jsonify("Method Not Allowed"), 405
 

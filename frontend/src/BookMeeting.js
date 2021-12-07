@@ -7,7 +7,7 @@ import axios from "axios";
 import ReactDOM from "react-dom";
 import {useNavigate} from "react-router-dom";
 import _ from 'lodash';
-import placeholder from "lodash/fp/placeholder";
+import BookingFormContainer from "./components/booking-form";
 
 function BookMeeting(){
     const navigate = useNavigate();
@@ -223,113 +223,9 @@ function BookMeeting(){
                         Book a new event and invite guests
                         <h1> </h1>
                     </Modal.Description>
-                    <Grid columns={1} relaxed='very' stackable>
-                    <Grid.Column>
-                        <Form>
-                            <Form.Input
-                                icon='gg'
-                                iconPosition='left'
-                                label='Title'
-                                placeholder='Title'
-                                maxLength ='50'
-                                value = {title}
-                                onChange={e => setTitle(e.target.value)}
-                                required
-                            />
-                            <Form.Input
-                                icon='sticky note outline'
-                                iconPosition='left'
-                                label='Description'
-                                placeholder='Description'
-                                maxLength ='400'
-                                value = {description}
-                                onChange={e => setDescription(e.target.value)}
-                                required
-                            />
-                            <Form.Group widths={"equal"}>
-                                <Form.Input
-                                icon='calendar outline'
-                                iconPosition='left'
-                                type="date"
-                                label='Date'
-                                value = {startDate}
-                                maxLength ='40'
-                                onChange={e => setStartDate(e.target.value)}
-                                required
-                            />
-                            {/*<Form.Input*/}
-                            {/*    icon='calendar'*/}
-                            {/*    iconPosition='left'*/}
-                            {/*    type="datetime-local"*/}
-                            {/*    label='End date'*/}
-                            {/*    value = {endDate}*/}
-                            {/*    onChange={e => setEndDate(e.target.value)}*/}
-                            {/*    required*/}
-                            {/*/>*/}
-                                <Form.Dropdown
-                                fluid
-                                search
-                                selection
-                                label='Start time'
-                                placeholder={startTime}
-                                options= {timeslotOptions }
-                                onChange={(e, {value}) => {
-                                    setStartTimeId(value);
-                                }}
-                                required
-                            />
-                                <Form.Dropdown
-                                fluid
-                                search
-                                selection
-                                label='End time'
-                                placeholder={endTime}
-                                options= {endTimeslotOptions }
-                                onChange={(e, {value}) => {
-                                    if (value < startTimeId) {
-                                        setEndTimeId(startTimeId);
-                                    } else {
-                                        setEndTimeId(value);
-                                    }
-                                }}
-                                required
-                            />
-                            </Form.Group>
-                            <Form.Dropdown
-                                fluid
-                                search
-                                selection
-                                label='Select room'
-                                placeholder='Room(s)'
-                                options= {roomOptions }
-                                onChange={(e, {value}) => {
-                                    setRoomId(value);
-                                }}
-                                required
-                            />
-                            <Form.Dropdown
-                                fluid
-                                search
-                                multiple
-                                selection
-                                label='Invite users'
-                                placeholder='User(s)'
-                                options= {userOptions }
-                                onChange={(e, {value}) => {
-                                    setInvitees(value);
-                                }}
-                                // required
-                            />
-                        </Form>
-
-                    </Grid.Column>
-                </Grid>
+                    <BookingFormContainer />
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button content='Book'
-                                    primary onClick={() => {
-                                        handleBooking()
-                                    }}/>
                     <Button onClick={() => {
                         setOpen(false)
                         if (newEvent !== {}) {
