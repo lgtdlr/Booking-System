@@ -199,7 +199,17 @@ function BookMeeting(){
         </List.Item>))}
       </List>
 
+    <Container style={{ height: 300}}>
 
+        <BarChart width={1130} height={250} data={top_5_busiest_Hours}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="start_time" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="times_scheduled" fill="#8884d8" />
+        </BarChart>
+    </Container>
 
     <Header as='h1'> Here are the top 10 most booked users </Header>
          <List  ordered> {mostBooked.map (item=>
