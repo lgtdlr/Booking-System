@@ -6,9 +6,6 @@ import {Button, Card, Container, Dimmer, Form, Grid, Input, Loader, Modal, Popup
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ReactDOM from "react-dom";
-import BookingFormContainer from "./components/booking-form/BookingFormContainer";
-import {setUnavailable} from "./components/set-unavailable-form/Success";
-import EditEventFormContainer from "./components/edit-event-form";
 import _ from "lodash";
 
 let events = []
