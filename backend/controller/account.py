@@ -15,7 +15,7 @@ class BaseAccount:
                   'password': row[2],
                   'name': row[3],
                   'role': row[4],
-                  'Count': row[5]}
+                  'Counts': row[5]}
         return result
 
     def build_map_dict_user_events(self, row):
