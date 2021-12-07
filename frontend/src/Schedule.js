@@ -87,23 +87,23 @@ function Schedule(){
         // 'end': new Date(moment.now())
     }]);
 
-    // const handleDelete = () => {
-    //     const json = {
-    //         event_id: eventId
-    //     }
-    //     const requestOptions = {
-    //     method: 'POST',
-    //     headers: { Authorization: "Bearer " + token }};
-    //
-    //     axios.post(url + '/event/delete-event', json, requestOptions)
-    //   .then(function (response) {
-    //       window.location.reload(false);
-    //       })
-    //   .catch(function (error) {
-    //
-    //   });
-    //
-    // }
+    const handleDelete = () => {
+        // const json = {
+        //     event_id: eventId
+        // }
+        const requestOptions = {
+        method: 'DELETE',
+        headers: { Authorization: "Bearer " + token }};
+
+        axios.delete(url + '/event/'+eventId, requestOptions)
+      .then(function (response) {
+          window.location.reload(false);
+          })
+      .catch(function (error) {
+
+      });
+
+    }
 
 
     const handleUpdate = () => {
@@ -280,7 +280,7 @@ function Schedule(){
                 <Modal.Actions>
                     <Button color={"youtube"} onClick={() => {
                         setOpen(false)
-                        // handleDelete();
+                        handleDelete();
                     }}>Delete</Button>
                     <Button color={"facebook"} onClick={() => {
                         setOpen(false)
