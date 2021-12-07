@@ -13,9 +13,9 @@ class BaseAccount:
         result = {'account_id': row[0],
                   'username': row[1],
                   'password': row[2],
-                  'full_name': row[3],
+                  'name': row[3],
                   'role': row[4],
-                  'number_of_bookings': row[5]}
+                  'Count': row[5]}
         return result
 
     def build_map_dict_user_events(self, row):
@@ -130,8 +130,7 @@ class BaseAccount:
             result_list.append(obj)
         return jsonify(result_list), 200
 
-    def setAccountAvailability(self, json):
-        account_id = json['account_id']
+    def setAccountAvailability(self, account_id, json):
         date = json['date']
         start_time = json['start_time']
         end_time = json['end_time']
