@@ -39,11 +39,14 @@ function BookMeeting(){
                 (response) {
                 mostBookingsWith = response.data
                 setData(mostBookingsWith)
-
+                console.log(data)
 
 
     })
-    console.log(data)
+        
+
+
+
     }, [])
 
     return <Container style={{ height: 800 }}>
