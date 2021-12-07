@@ -349,9 +349,11 @@ def getMostBookingWithSelectedUser():
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/redpush/room/<int:account_id>/most-booked-room-by-user', methods=['GET'])
-def getMostBookingInRoomWithSelectedUser(account_id):
+@app.route('/redpush/room/most-booked-room-by-user', methods=['GET'])
+@jwt_required()
+def getMostBookingInRoomWithSelectedUser():
     if request.method == 'GET':
+        account_id = get_jwt_identity()
         return BaseRoom().geMostBookedRooms_by_user(account_id)
     else:
         return jsonify("Method Not Allowed"), 405
