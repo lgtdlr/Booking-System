@@ -63,6 +63,42 @@ class AccountDAO:
             self.conn.commit()
             return True
 
+    def updateAccountName(self, account_id, full_name):
+        cursor = self.conn.cursor()
+        query = "UPDATE account SET full_name = %s WHERE account_id=%s;"
+        try:
+            cursor.execute(query, (full_name, account_id,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
+
+    def updateAccountUserName(self, account_id, username):
+        cursor = self.conn.cursor()
+        query = "UPDATE account SET username = %s WHERE account_id=%s;"
+        try:
+            cursor.execute(query, (username, account_id,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
+
+    def updateAccountPassword(self, account_id, password):
+        cursor = self.conn.cursor()
+        query = "UPDATE account SET password = %s WHERE account_id=%s;"
+        try:
+            cursor.execute(query, (password, account_id,))
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+        else:
+            self.conn.commit()
+            return True
+
     def deleteAccount(self, account_id):
         cursor = self.conn.cursor()
         query = "DELETE FROM account WHERE account_id=%s;"

@@ -170,6 +170,17 @@ def login():
                                                                     "role": user[0].json['role']}))
     return jsonify({"msg": "Incorrect username or password"}), 401
 
+@app.route('/redpush/account/edit', methods=['PUT'])
+@jwt_required()
+def editInfo():
+    user_id = get_jwt_identity()
+    user_role = BaseAccount().getAccountById(user_id)
+
+
+
+    return BaseAccount().updateAccount(user_id, request.json, user_role[0].json['role'])
+
+
 
 # Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame
 @app.route('/redpush/room/find-available-room', methods=['POST'])
