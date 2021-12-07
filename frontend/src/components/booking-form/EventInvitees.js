@@ -14,7 +14,9 @@ export async function getUsers() {
     };
     await axios.get(url + '/account', requestOptions)
       .then(function (response) {
+          // console.log(response.data)
         users = response.data;
+        users = users[0]
 
       })
 }

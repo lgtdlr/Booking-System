@@ -15,6 +15,7 @@ from backend.controller.occupies import BaseOccupiedTimeslot
 app = Flask(__name__)
 
 app.config["JWT_SECRET_KEY"] = "ak1dd32jk4798khj&$#*H(jnd(N(#HNDDN999#RH9asd#nn5q"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 jwt = JWTManager(app)
 
 CORS(app)

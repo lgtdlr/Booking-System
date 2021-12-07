@@ -17,9 +17,6 @@ async function getMostBookingWithSelectedUser() {
     axios.get(url+'/account/bookings-with-user', requestOptions).then(function
         (response) {
         mostBookingsWith = response.data
-        for (let i = 0; i < mostBookingsWith.length; i++) {
-            mostBookingsWith.push(mostBookingsWith[i])
-        }
     })
 }
 

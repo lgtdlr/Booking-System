@@ -132,14 +132,14 @@ class BaseAccount:
 
     def setAccountAvailability(self, account_id, json):
         date = json['date']
-        start_time = json['start_time']
-        end_time = json['end_time']
+        start_time_id = json['start_time_id']
+        end_time_id = json['end_time_id']
         is_available = json['is_available']
         dao = AccountDAO()
         if is_available:
-            result = dao.setAccountAvailable(account_id, date, start_time, end_time)
+            result = dao.setAccountAvailable(account_id, date, start_time_id, end_time_id)
         else:
-            result = dao.setAccountUnavailable(account_id, date, start_time, end_time)
+            result = dao.setAccountUnavailable(account_id, date, start_time_id, end_time_id)
         return jsonify(result), 200
 
     def getUserSchedule(self, username, json):
