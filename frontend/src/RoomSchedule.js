@@ -14,7 +14,7 @@ let rooms = [];
 
 async function getAllRooms() {
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "https://redpush.herokuapp.com/redpush";
     const requestOptions = {
         headers: { Authorization: "Bearer " + token }
     };
@@ -30,7 +30,7 @@ async function getAllRooms() {
 
 async function getAllRoomEvents(room) {
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "https://redpush.herokuapp.com/redpush";
     const requestOptions = {
         headers: { Authorization: "Bearer " + token }
     };
@@ -53,7 +53,7 @@ async function getAllRoomEvents(room) {
 function RoomSchedule() {
     const navigate = useNavigate();
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "https://redpush.herokuapp.com/redpush";
     const localizer = momentLocalizer(moment);
     const [newEvent, setNewEvent] = useState({});
     const [room, setRoom] = useState(1);
@@ -91,7 +91,7 @@ function RoomSchedule() {
             search
             selection
             label='Select room'
-            name='room_id'
+            name='room'
             placeholder='Room(s)'
             defaultValue={1}
             options= {roomOptions }

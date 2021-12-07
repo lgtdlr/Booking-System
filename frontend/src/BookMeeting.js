@@ -13,7 +13,7 @@ import SetUnavailableContainer from "./components/set-unavailable-form";
 function BookMeeting(){
     const navigate = useNavigate();
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "https://redpush.herokuapp.com/redpush";
     const [newEvent, setNewEvent] = useState({});
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

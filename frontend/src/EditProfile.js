@@ -6,7 +6,7 @@ import moment from "moment";
 import UserView from "./UserView";
 
 function Edit() {
-    const url = 'http://127.0.0.1:5000/redpush'
+    const url = 'https://redpush.herokuapp.com/redpush'
     const [open, setOpen] = useState(false);
     const [registerOpen, setRegisterOpen] = useState(false);
     const [token, setToken] = useState(sessionStorage.getItem("token"));
