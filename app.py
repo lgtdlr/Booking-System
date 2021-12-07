@@ -54,6 +54,8 @@ def handleRooms():
         return BaseRoom().getAllRooms()
     elif request.method == 'POST':
         return BaseRoom().addNewRoom(request.json)
+    elif request.method == 'DELETE':
+        return BaseRoom().deleteRoom(request.json['room_id'])
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -193,6 +195,18 @@ def editRoom():
    else:
         room_id = BaseRoom().getRoomIdByName(request.json['oldname'])
         return BaseRoom().updateRoom(room_id[0].json['room_id'], request.json)
+
+@app.route('/redpush/account/delete-room', methods=['POST'])
+@jwt_required()
+def deleteRoom():
+    claims = get_jwt()
+    role = claims["role"]
+    if role != "Department Staff":
+        return jsonify("The server understood the request, but is refusing to authorize it."), 403
+    else:
+        room_id = BaseRoom().getRoomIdByName(request.json['name'])
+        return BaseRoom().deleteRoom(room_id[0].json['room_id'])
+
 
 
 # Operation 2: Find an available room (lab, classroom, study space, etc.) at a time frame

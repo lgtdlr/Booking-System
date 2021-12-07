@@ -32,6 +32,17 @@ function EditRoom() {
         })
     }
 
+    const handleDelete = () => {const requestOptions = {
+        headers: { Authorization: "Bearer " + token }};
+        const changes = {
+            name: name
+        }
+        console.log(changes)
+        axios.post(url + '/account/delete-room', changes,requestOptions).catch(function (error) {
+            console.log(error);
+        })
+    }
+
     return(
         <Container>
         <Form>
@@ -72,6 +83,18 @@ function EditRoom() {
                         primary onClick={() => {
                     handleChange()}} > Submit
                 </Button>
+
+                <Form.Field
+                value = {name}
+                onChange={e=>setName(e.target.value)}
+                >
+                    <label> Name of Room you want to delete</label>
+                    <input/>
+                    <Button type='submit'
+                        primary onClick={() => {
+                    handleDelete()}} > Submit
+                </Button>
+                </Form.Field>
         </Form>
             </Container>
 )
