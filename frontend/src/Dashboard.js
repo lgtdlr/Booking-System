@@ -91,7 +91,7 @@ function BookMeeting(){
           <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
           <List.Content>
              <List.Header>{item.name}</List.Header>
-
+              Bookings {item.Counts}
           </List.Content>
         </List.Item>))}
       </List>
