@@ -13,6 +13,10 @@ class BaseEvent:
         result = {'event_id': event_id, 'title': title, 'description': description, 'date': date, 'room_id': room_id}
         return result
 
+    def build_attr_dict_update_event(self, event_id, title, description, date):
+        result = {'event_id': event_id, 'title': title, 'description': description, 'date': date}
+        return result
+
     def build_map_dict_timeslot(self, row):
         result = {'timeslot_id': row[0],
                   'start_time': row[1],
@@ -53,10 +57,10 @@ class BaseEvent:
         title = json['title']
         description = json['description']
         date = json['date']
-        room_id = json['room_id']
+        # room_id = json['room_id']
         dao = EventDAO()
-        is_updated = dao.updateEvent(event_id, title, description, date, room_id)
-        result = self.build_attr_dict(event_id, title, description, date, room_id)
+        is_updated = dao.updateEvent(event_id, title, description, date)
+        result = self.build_attr_dict_update_event(event_id, title, description, date)
         return jsonify(result), 200
 
     def deleteEvent(self, event_id):

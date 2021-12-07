@@ -36,10 +36,10 @@ class EventDAO:
         self.conn.commit()
         return mid
 
-    def updateEvent(self, event_id, title, description, date, room_id):
+    def updateEvent(self, event_id, title, description, date):
         cursor = self.conn.cursor()
-        query = "update event set title = %s, description = %s, date = %s, room_id = %s where event_id=%s;"
-        cursor.execute(query, (title, description, date, event_id, room_id,))
+        query = "update event set title = %s, description = %s, date = %s where event_id=%s;"
+        cursor.execute(query, (title, description, date, event_id,))
         self.conn.commit()
         return True
 

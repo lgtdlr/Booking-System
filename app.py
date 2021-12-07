@@ -94,6 +94,14 @@ def handleEventById(event_id):
         return jsonify("Method Not Allowed"), 405
 
 
+@app.route('/redpush/event/delete-event', methods=['POST'])
+def deleteEvent():
+    if request.method == 'POST':
+        return BaseEvent().deleteEvent(request.json['event_id'])
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 @app.route('/redpush/invitee', methods=['GET', 'POST'])
 def handleInvitees():
     if request.method == 'GET':
@@ -120,6 +128,13 @@ def handleInviteeByUniqueId(event_id, account_id):
         return BaseInvitee().updateInvitee(account_id, event_id, request.json)
     if request.method == 'DELETE':
         return BaseInvitee().deleteInvitee(account_id, event_id)
+    return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/redpush/invitee/delete-invitees', methods=['POST'])
+def handleInviteesByUniqueId():
+    if request.method == 'POST':
+        return BaseInvitee().deleteInviteeWithJson(request.json)
     return jsonify("Method Not Allowed"), 405
 
 
@@ -159,7 +174,6 @@ def handleOccupiedTimeslotByUniqueId(event_id, timeslot_id):
         return BaseOccupiedTimeslot().deleteOccupiedTimeslot(timeslot_id, event_id)
     return jsonify("Method Not Allowed"), 405
 
-
 @app.route('/redpush/account/login', methods=['GET', 'POST'])
 def login():
     usernameInput = request.json['username']
@@ -176,12 +190,12 @@ def login():
     return jsonify({"msg": "Incorrect username or password"}), 401
 
 
-
 @app.route('/redpush/account/edit', methods=['PUT'])
 @jwt_required()
 def editInfo():
     user_id = get_jwt_identity()
     user_role = BaseAccount().getAccountById(user_id)
+
     return BaseAccount().updateAccount(user_id, request.json, user_role[0].json['role'])
 
 
@@ -259,7 +273,6 @@ def getUserSchedule(username):
 def getUserEvents():
     if request.method == 'GET':
         account_id = get_jwt_identity()
-        # flask.
         return BaseAccount().getUserEvents(account_id)
     else:
         return jsonify("Method Not Allowed"), 405
@@ -297,6 +310,17 @@ def setUserAvailability():
     if request.method == 'POST':
         account_id = get_jwt_identity()
         return BaseAccount().setAccountAvailability(account_id, request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+# Operation 9: Allow user to mark time-space as “Unavailable” / "Available"
+@app.route('/redpush/account/set-availability-true', methods=['POST'])
+@jwt_required()
+def setUserAvailabilityTrue():
+    if request.method == 'POST':
+        account_id = get_jwt_identity()
+        return BaseAccount().setAccountAvailabilityTime(account_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 

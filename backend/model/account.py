@@ -156,14 +156,19 @@ class AccountDAO:
 
     def setAccountAvailable(self, account_id, date, start_time, end_time):
         cursor = self.conn.cursor()
-        query = "DELETE FROM is_account_unavailable WHERE account_id IN " \
-                "(SELECT iau.account_id FROM is_account_unavailable iau " \
-                "INNER JOIN timeslot t on t.timeslot_id = iau.timeslot_id " \
-                "WHERE account_id = %s AND date = %s " \
-                "AND (t.timeslot_id >= %s AND t.timeslot_id <= %s) " \
-                "AND (t.end_time-t.start_time >= '00:00:00'::time));"
+        query = """DELETE FROM is_account_unavailable WHERE account_id IN 
+                (SELECT iau.account_id FROM is_account_unavailable iau 
+                INNER JOIN timeslot t on t.timeslot_id = iau.timeslot_id 
+                WHERE account_id = %s AND date = %s 
+                AND (t.start_time >= %s::time AND t.end_time <= %s::time) 
+                AND (t.end_time-t.start_time >= '00:00:00'::time))
+                AND timeslot_id IN (SELECT t.timeslot_id FROM is_account_unavailable iau 
+                INNER JOIN timeslot t on t.timeslot_id = iau.timeslot_id 
+                WHERE account_id = %s AND date = %s 
+                AND (t.start_time >= %s::time AND t.end_time <= %s::time) 
+                AND (t.end_time-t.start_time >= '00:00:00'::time)) AND date = %s;"""
         try:
-            cursor.execute(query, (account_id, date, start_time, end_time,))
+            cursor.execute(query, (account_id, date, start_time, end_time,account_id, date, start_time, end_time,date))
         except psycopg2.IntegrityError:
             self.conn.rollback()
             return False
@@ -251,21 +256,28 @@ class AccountDAO:
 
     def getUserEvents(self, account_id):
         cursor = self.conn.cursor()
+        # query = """WITH user_events AS (
+        #             SELECT e.event_id, e.title as id, (e.date+t.start_time) AT TIME ZONE 'AST' as start_time, (e.date+t.end_time) AT TIME ZONE 'AST' as end_time FROM account
+        #                 INNER JOIN is_invited ii on account.account_id = ii.account_id INNER JOIN event e on ii.event_id = e.event_id
+        #                 INNER JOIN occupies o on e.event_id = o.event_id INNER JOIN timeslot t on o.timeslot_id = t.timeslot_id
+        #             WHERE account.account_id = %s)
+        #             select id, min(start_time) as begin_at, max(end_time) as end_at
+        #             from (select ue.*, sum(startflag) over (partition by id order by start_time) as grp
+        #                   from (select ue.*,
+        #                                (case when lag(end_time) over (partition by id order by start_time) >= start_time
+        #                                      then 0 else 1
+        #                                 end) as startflag
+        #                         from user_events ue
+        #                        ) ue
+        #                  ) ue
+        #             group by id, grp;"""
         query = """WITH user_events AS (
-                    SELECT e.event_id, e.title as id, (e.date+t.start_time) AT TIME ZONE 'AST' as start_time, (e.date+t.end_time) AT TIME ZONE 'AST' as end_time FROM account
-                        INNER JOIN is_invited ii on account.account_id = ii.account_id INNER JOIN event e on ii.event_id = e.event_id
-                        INNER JOIN occupies o on e.event_id = o.event_id INNER JOIN timeslot t on o.timeslot_id = t.timeslot_id
-                    WHERE account.account_id = %s)
-                    select id, min(start_time) as begin_at, max(end_time) as end_at
-                    from (select ue.*, sum(startflag) over (partition by id order by start_time) as grp
-                          from (select ue.*,
-                                       (case when lag(end_time) over (partition by id order by start_time) >= start_time
-                                             then 0 else 1
-                                        end) as startflag
-                                from user_events ue
-                               ) ue
-                         ) ue
-                    group by id, grp;"""
+                    SELECT e.event_id as id, e.title as title, e.description as description, (e.date+t.start_time) AT TIME ZONE 'AST' as start_time, (e.date+t.end_time) AT TIME ZONE 'AST' as end_time FROM account
+                                        INNER JOIN is_invited ii on account.account_id = ii.account_id INNER JOIN event e on ii.event_id = e.event_id
+                                        INNER JOIN occupies o on e.event_id = o.event_id INNER JOIN timeslot t on o.timeslot_id = t.timeslot_id
+                                    WHERE account.account_id = %s
+                )SELECT id, title, description, min(start_time) as start_time, max(end_time) as start_time FROM user_events
+                GROUP BY id, title, description ;"""
         cursor.execute(query, (account_id,))
         result = cursor.fetchall()
         return result

@@ -19,9 +19,19 @@ class BaseAccount:
         return result
 
     def build_map_dict_user_events(self, row):
-        result = {'title': row[0],
-                  'start': row[1],
-                  'end': row[2]}
+        result = {
+            'id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'start': row[3],
+            'end': row[4]}
+        return result
+
+    def build_map_dict_user_unavailable(self, row):
+        result = {
+            'title': row[0],
+            'start': row[1],
+            'end': row[2]}
         return result
 
     def build_attr_dict(self, account_id, username, full_name, role):
@@ -89,7 +99,7 @@ class BaseAccount:
         username = json['username']
         password = json['password']
         full_name = json['full_name']
-        #role = json['role']
+        # role = json['role']
         dao = AccountDAO()
         if username != '':
             dao.updateAccountUserName(account_id, username)
@@ -147,6 +157,18 @@ class BaseAccount:
             result = dao.setAccountUnavailable(account_id, date, start_time_id, end_time_id)
         return jsonify(result), 200
 
+    def setAccountAvailabilityTime(self, account_id, json):
+        date = json['date']
+        start_time = json['start_time']
+        end_time = json['end_time']
+        is_available = json['is_available']
+        dao = AccountDAO()
+        if is_available:
+            result = dao.setAccountAvailable(account_id, date, start_time, end_time)
+        else:
+            result = dao.setAccountUnavailable(account_id, date, start_time, end_time)
+        return jsonify(result), 200
+
     def getUserSchedule(self, username, json):
         date = json['date']
         dao = AccountDAO()
@@ -186,6 +208,6 @@ class BaseAccount:
             obj = self.build_map_dict_user_events(row)
             result_list.append(obj)
         for row in unavailable_times_list:
-            obj = self.build_map_dict_user_events(row)
+            obj = self.build_map_dict_user_unavailable(row)
             result_list.append(obj)
         return jsonify(result_list), 200

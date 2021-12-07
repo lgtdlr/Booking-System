@@ -189,7 +189,7 @@ function BookMeeting(){
         endAccessor="end"
         showMultiDayTimes
         popup
-        views={["month", "day"]}
+        views={["month", "week", "day"]}
         defaultDate={Date.now()}
         onSelectSlot = {(selected) => {
             setNewEvent({

@@ -21,12 +21,13 @@ export async function getUsers() {
 }
 
 
-const EventInvitees = (props) => {
+const EditEventInvitees = (props) => {
 
 
     const { account_id } = props.values;
     const [isLoading, setIsLoading] = useState(true);
     const [allUsers, setAllUsers] = useState(users);
+
     const userOptions = _.map(allUsers, (username, index) => ({
         key: allUsers[index].username,
         text: allUsers[index].username + " ( " + allUsers[index].full_name + " )",
@@ -72,4 +73,4 @@ const EventInvitees = (props) => {
 }
 
 
-export { EventInvitees };
+export { EditEventInvitees };

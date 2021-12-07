@@ -21,7 +21,8 @@ class InviteeDAO:
 
     def getAllInviteesByEvent(self, event_id):
         cursor = self.conn.cursor()
-        query = "SELECT account_id, event_id from is_invited WHERE event_id = %s;"
+        query = """SELECT account_id, username, full_name, event_id 
+        from account NATURAL INNER JOIN is_invited WHERE event_id = %s;"""
         cursor.execute(query, (event_id,))
         result = []
         for row in cursor:
@@ -82,7 +83,7 @@ class InviteeDAO:
 
     def deleteInvitee(self, account_id, event_id):
         cursor = self.conn.cursor()
-        query = "DELETE FROM is_invited WHERE account_id = %s AND event_id = %s;"
+        query = "DELETE FROM is_invited WHERE account_id=ANY(%s) AND event_id=%s;"
         try:
             cursor.execute(query, (account_id, event_id))
         except psycopg2.IntegrityError:
