@@ -10,6 +10,7 @@ let mostBookingsWith = [];
 let mostBookedUsers = [];
 let mostBookingsIn_Room_by_Registered_User = [];
 let top_10_Booked_Rooms = [];
+let busiestHours = [];
 
 async function getMostBookingWithSelectedUser() {
     const token = sessionStorage.getItem("token");
@@ -59,6 +60,16 @@ async function getMostBookedRooms(){
 }
 
 
+async function getMostBusiestHours(){
+    const url = "http://127.0.0.1:5000/redpush";
+
+    await axios.get(url+'/event/busiest-hours').then(function
+        (response) {
+        busiestHours = response.data
+    })
+}
+
+
 function BookMeeting(){
         //data represents users with whom registered has the most bookings with
     const [data, setData] = useState([{"name": 1, "Counts": 5},
@@ -78,6 +89,10 @@ function BookMeeting(){
     const [ten_most_Booked_Rooms,set_10_MostBookedRooms] = useState(
         [{"name": 1, "room_uses": 2}]
     );
+
+    const [top_5_busiest_Hours, setBusiestHours] = useState(
+        [{"start_time" : "01:30:00", "end_time" : "2:00:00", "times_scheduled" : 23}]
+    )
 
 
     useEffect(() => {
@@ -106,6 +121,15 @@ function BookMeeting(){
             }
 
         )
+
+        getMostBusiestHours().then( ()=>{
+            setBusiestHours(busiestHours)
+            console.log(top_10_Booked_Rooms)
+            }
+
+
+        )
+
 
     }, [])
 
@@ -164,6 +188,20 @@ function BookMeeting(){
           <List.Content>
              <List.Header>{item.name}</List.Header>
               Room uses {item.room_uses}
+          </List.Content>
+        </List.Item>))}
+      </List>
+
+
+
+    <Header as='h1'> These are the top 5 busiest hours </Header>
+         <List horizontal ordered> {top_5_busiest_Hours.map (item=>
+      (<List.Item key={item.timeslot_id}>
+
+          <List.Content>
+             <List.Header>start_time {item.start_time} </List.Header>
+              <List.Header>end_time {item.end_time} </List.Header>
+              Times scheduled {item.times_scheduled}
           </List.Content>
         </List.Item>))}
       </List>
