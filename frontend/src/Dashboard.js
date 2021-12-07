@@ -8,6 +8,7 @@ import axios from "axios";
 
 let mostBookingsWith = [];
 let mostBookedUsers = [];
+let mostBookingsIn_Room_by_Registered_User = [];
 
 async function getMostBookingWithSelectedUser() {
     const token = sessionStorage.getItem("token");
@@ -33,6 +34,21 @@ async function getMostBookedUsers() {
 }
 
 
+
+async function getMostBooking_InRoom_WithSelectedUser() {
+    const token = sessionStorage.getItem("token");
+    const url = "http://127.0.0.1:5000/redpush";
+    const requestOptions = {
+        headers: { Authorization: "Bearer " + token }
+    };
+    await axios.get(url+'/room/most-booked-room-by-user',requestOptions).then(function
+        (response) {
+        mostBookingsIn_Room_by_Registered_User = response.data
+    })
+}
+
+
+
 function BookMeeting(){
         //data represents users with whom registered has the most bookings with
     const [data, setData] = useState([{"name": 1, "Counts": 5},
@@ -45,6 +61,10 @@ function BookMeeting(){
                                                             {"name": 2, "Counts": 4}])
 
 
+    const [mostBookedRoom_by_user,setMostBookedRoom] = useState(
+        [{"name": 1, "room_uses": 2}]
+    );
+
 
     useEffect(() => {
         getMostBookingWithSelectedUser().then(  () => {
@@ -56,6 +76,14 @@ function BookMeeting(){
             setMostBooked(mostBookedUsers)
             console.log(mostBookedUsers)
             }
+        )
+
+
+        getMostBooking_InRoom_WithSelectedUser().then( () =>{
+            setMostBookedRoom(mostBookingsIn_Room_by_Registered_User)
+            console.log(mostBookingsIn_Room_by_Registered_User)
+            }
+
         )
 
     }, [])
@@ -73,29 +101,40 @@ function BookMeeting(){
     // </Container>
 
     return (
-        <div>
+<div>
     <Header as='h1'> You share a maximum of {(data.length !== 0 ? data[0].Counts : 0)} bookings with these users </Header>
         <List horizontal ordered> {data.map (item=>
-      (<List.Item key={item.account_id}>
-          <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
-          <List.Content>
-             <List.Header>{item.name}</List.Header>
+          (<List.Item key={item.account_id}>
+              <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
+              <List.Content>
+                 <List.Header>{item.name}</List.Header>
 
-          </List.Content>
-        </List.Item>))}
-      </List>
+              </List.Content>
+            </List.Item>))}
+         </List>
 
     <Header as='h1'> Here are the top 10 most booked users </Header>
          <List horizontal ordered> {mostBooked.map (item=>
+          (<List.Item key={item.account_id}>
+              <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
+              <List.Content>
+                 <List.Header>{item.name}</List.Header>
+                  Bookings {item.Counts}
+              </List.Content>
+            </List.Item>))}
+          </List>
+
+    <Header as='h1'> These are the most used rooms or room used by you </Header>
+         <List horizontal ordered> {mostBookedRoom_by_user.map (item=>
       (<List.Item key={item.account_id}>
           <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
           <List.Content>
              <List.Header>{item.name}</List.Header>
-              Bookings {item.Counts}
+              Room uses {item.room_uses}
           </List.Content>
         </List.Item>))}
       </List>
-        </div>
+</div>
 
     )
 
