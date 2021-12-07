@@ -53,7 +53,7 @@ function BookMeeting(){
         })
 
         getMostBookedUsers().then( ()=>{
-            setMostBooked(mostBooked)
+            setMostBooked(mostBookedUsers)
             console.log(mostBookedUsers)
             }
         )
@@ -73,8 +73,20 @@ function BookMeeting(){
     // </Container>
 
     return (
-        <div><Header as='h1'> You share a maximum of {(data.length !== 0 ? data[0].Counts : 0)} bookings with these users </Header>
+        <div>
+    <Header as='h1'> You share a maximum of {(data.length !== 0 ? data[0].Counts : 0)} bookings with these users </Header>
         <List horizontal ordered> {data.map (item=>
+      (<List.Item key={item.account_id}>
+          <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
+          <List.Content>
+             <List.Header>{item.name}</List.Header>
+
+          </List.Content>
+        </List.Item>))}
+      </List>
+
+    <Header as='h1'> Here are the top 10 most booked users </Header>
+         <List horizontal ordered> {mostBooked.map (item=>
       (<List.Item key={item.account_id}>
           <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
           <List.Content>
