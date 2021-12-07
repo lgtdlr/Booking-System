@@ -14,7 +14,7 @@ let busiestHours = [];
 
 async function getMostBookingWithSelectedUser() {
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "http://redpush.herokuapp.com/redpush/";
     const requestOptions = {
         headers: { Authorization: "Bearer " + token }
     };
@@ -27,7 +27,7 @@ async function getMostBookingWithSelectedUser() {
 
 async function getMostBookedUsers() {
 
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "http://redpush.herokuapp.com/redpush/";
 
     await axios.get(url+'/account/booked-users').then(function
         (response) {
@@ -39,7 +39,7 @@ async function getMostBookedUsers() {
 
 async function getMostBooking_InRoom_WithSelectedUser() {
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "http://redpush.herokuapp.com/redpush/";
     const requestOptions = {
         headers: { Authorization: "Bearer " + token }
     };
@@ -51,7 +51,7 @@ async function getMostBooking_InRoom_WithSelectedUser() {
 
 
 async function getMostBookedRooms(){
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "http://redpush.herokuapp.com/redpush/";
 
     await axios.get(url+'/room/most-booked').then(function
         (response) {
@@ -61,7 +61,7 @@ async function getMostBookedRooms(){
 
 
 async function getMostBusiestHours(){
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "http://redpush.herokuapp.com/redpush/";
 
     await axios.get(url+'/event/busiest-hours').then(function
         (response) {
