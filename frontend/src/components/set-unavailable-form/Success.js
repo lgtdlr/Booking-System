@@ -7,7 +7,7 @@ let book = {};
 export async function setUnavailable(date, start_time_id, end_time_id, availability) {
 
     const token = sessionStorage.getItem("token");
-    const url = "http://127.0.0.1:5000/redpush";
+    const url = "https://redpush.herokuapp.com/redpush";
     const requestOptions = {
         headers: { Authorization: "Bearer " + token}
     };
