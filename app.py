@@ -277,6 +277,14 @@ def getUserEvents():
     else:
         return jsonify("Method Not Allowed"), 405
 
+# Give all events and unavailable times of room
+@app.route('/redpush/room/<int:room_id>/events', methods=['GET'])
+def getRoomEvents(room_id):
+    if request.method == 'GET':
+        return BaseRoom().getRoomEvents(room_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
 
 # Operation 6: Create a meeting with 2+ people in a room
 @app.route('/redpush/event/create-meeting', methods=['POST'])

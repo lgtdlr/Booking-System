@@ -205,3 +205,35 @@ class RoomDAO:
         cursor.execute(query, (account_id,))
         result = cursor.fetchall()
         return result
+
+    def getRoomEvents(self, room_id):
+        cursor = self.conn.cursor()
+        query = """WITH room_events AS (
+                            SELECT e.event_id as id, e.title as title, e.description as description, (e.date+t.start_time) AT TIME ZONE 'AST' as start_time, (e.date+t.end_time) AT TIME ZONE 'AST' as end_time FROM room r
+                                                INNER JOIN event e on r.room_id = e.room_id
+                                                INNER JOIN occupies o on e.event_id = o.event_id INNER JOIN timeslot t on o.timeslot_id = t.timeslot_id
+                                            WHERE r.room_id = %s
+                        )SELECT id, title, description, min(start_time) as start_time, max(end_time) as start_time FROM room_events
+                        GROUP BY id, title, description ;"""
+        cursor.execute(query, (room_id,))
+        result = cursor.fetchall()
+        return result
+
+    def getRoomUnavailableTimes(self, room_id):
+        cursor = self.conn.cursor()
+        query = """WITH room_unavaiable_times AS (
+                    SELECT iau.date, 'Unavailable' as id, (iau.date+timeslot.start_time) AT TIME ZONE 'AST' as start_time, (iau.date+timeslot.end_time) AT TIME ZONE 'AST' as end_time FROM room
+                    NATURAL INNER JOIN is_room_unavailable iau NATURAL INNER JOIN timeslot WHERE room.room_id= %s)
+                    select id, min(start_time) as begin_at, max(end_time) as end_at
+                    from (select uat.*, sum(startflag) over (partition by id order by start_time) as grp
+                          from (select uat.*,
+                                       (case when lag(end_time) over (partition by id order by start_time) >= start_time
+                                             then 0 else 1
+                                        end) as startflag
+                                from room_unavaiable_times uat
+                               ) uat
+                         ) uat
+                    group by id, grp;"""
+        cursor.execute(query, (room_id,))
+        result = cursor.fetchall()
+        return result

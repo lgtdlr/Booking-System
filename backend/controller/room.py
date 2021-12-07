@@ -9,6 +9,22 @@ class BaseRoom:
         result = {'room_id': row[0], 'name': row[1], 'capacity': row[2], 'type': row[3]}
         return result
 
+    def build_map_dict_room_events(self, row):
+        result = {
+            'id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'start': row[3],
+            'end': row[4]}
+        return result
+
+    def build_map_dict_room_unavailable(self, row):
+        result = {
+            'title': row[0],
+            'start': row[1],
+            'end': row[2]}
+        return result
+
     def build_map_dict_most_bookings_in_room(self, row):
         result = {'room_id': row[0],
                   'name': row[1],
@@ -30,6 +46,7 @@ class BaseRoom:
         result = {'account_id': row[0], 'username': row[1], 'full_name': row[2], 'role': row[3], 'date': row[4],
                   'start_time': row[5], 'end_time': row[6]}
         return result
+
 
     def build_attr_dict(self, room_id, name, capacity, type):
         result = {'room_id': room_id, 'name': name, 'capacity': capacity, 'type': type}
@@ -161,3 +178,19 @@ class BaseRoom:
             obj = self.build_map_dict_most_bookings_in_room(row)
             result_list.append(obj)
         return jsonify(result_list), 200
+
+    def getRoomEvents(self, room_id):
+        dao = RoomDAO()
+        event_list = dao.getRoomEvents(room_id)
+        unavailable_times_list = dao.getRoomUnavailableTimes(room_id)
+        result_list = []
+        for row in event_list:
+            obj = self.build_map_dict_room_events(row)
+            result_list.append(obj)
+        for row in unavailable_times_list:
+            obj = self.build_map_dict_room_unavailable(row)
+            result_list.append(obj)
+        return jsonify(result_list), 200
+        pass
+
+

@@ -211,3 +211,4 @@ class BaseAccount:
             obj = self.build_map_dict_user_unavailable(row)
             result_list.append(obj)
         return jsonify(result_list), 200
+
