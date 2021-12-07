@@ -148,7 +148,7 @@ function BookMeeting(){
     <Header as='h1'> These are the most used rooms or room used by you </Header>
          <List horizontal ordered> {mostBookedRoom_by_user.map (item=>
       (<List.Item key={item.account_id}>
-          <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
+
           <List.Content>
              <List.Header>{item.name}</List.Header>
               Room uses {item.room_uses}
