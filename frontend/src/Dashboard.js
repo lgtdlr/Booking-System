@@ -68,7 +68,7 @@ function BookMeeting(){
 //   </List>)
 
     return (
-        <div><Header as='h1'> You share a maximum of {data[0].Counts} bookings with these users </Header>
+        <div><Header as='h1'> You share a maximum of {(data.length !== 0 ? data[0].Counts : 0)} bookings with these users </Header>
         <List horizontal ordered> {data.map (item=> (<List.Item key={item.account_id}>
       <Image avatar src='https://react.semantic-ui.com/images/avatar/small/tom.jpg' />
       <List.Content>
