@@ -14,7 +14,7 @@ let busiestHours = [];
 
 async function getMostBookingWithSelectedUser() {
     const token = sessionStorage.getItem("token");
-    const url = "http://redpush.herokuapp.com/redpush/";
+    const url = "http://redpush.herokuapp.com/redpush";
     const requestOptions = {
         headers: { Authorization: "Bearer " + token }
     };
