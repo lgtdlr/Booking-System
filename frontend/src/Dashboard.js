@@ -22,7 +22,11 @@ async function getMostBookingWithSelectedUser() {
 
 function BookMeeting(){
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([{"name": 1, "Counts": 5},
+                                                {"name": 2, "Counts": 4},
+                                                {"name": 3, "Counts": 3},
+                                                {"name": 4, "Counts": 2},
+                                                {"name": 5, "Counts": 1}]);
     useEffect(() => {
         getMostBookingWithSelectedUser().then(  () => {
             setData(mostBookingsWith)
